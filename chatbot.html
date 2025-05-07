@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>চ্যাটবট | Chatbot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #059669;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease;
+        }
+        .chatbot-button:hover {
+            transform: scale(1.1);
+        }
+        .chatbot-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            display: none;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .chatbot-window.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .chatbot-header {
+            padding: 15px;
+            background: #059669;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chatbot-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+        .message.bot {
+            align-self: flex-start;
+            background: #f3f4f6;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .message.user {
+            align-self: flex-end;
+            background: #059669;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+        .chatbot-input {
+            padding: 15px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+        .chatbot-input input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            outline: none;
+        }
+        .chatbot-input button {
+            padding: 8px 15px;
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chatbot-input button:hover {
+            background: #047857;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="chatbot-container">
+        <!-- Chatbot Button -->
+        <div class="chatbot-button" id="chatbotButton">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+            </svg>
+        </div>
+
+        <!-- Chatbot Window -->
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3 class="font-semibold">ই-ফেলিসিটি কোর্ট চ্যাটবট</h3>
+                <button id="closeChatbot" class="text-white hover:text-gray-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot">
+                    <p>আসসালামু আলাইকুম! আমি ই-ফেলিসিটি কোর্টের চ্যাটবট। কিভাবে আপনাকে সাহায্য করতে পারি?</p>
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="messageInput" placeholder="আপনার প্রশ্ন লিখুন...">
+                <button id="sendMessage">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatbotButton = document.getElementById('chatbotButton');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const closeChatbot = document.getElementById('closeChatbot');
+        const messageInput = document.getElementById('messageInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+
+        // Initialize chatbot state
+        let isChatbotOpen = false;
+
+        // Toggle chatbot window
+        chatbotButton.addEventListener('click', () => {
+            if (!isChatbotOpen) {
+                chatbotWindow.style.display = 'flex';
+                // Add a small delay before adding the show class for the animation
+                setTimeout(() => {
+                    chatbotWindow.classList.add('show');
+                }, 10);
+                isChatbotOpen = true;
+            }
+        });
+
+        // Close chatbot window
+        closeChatbot.addEventListener('click', () => {
+            chatbotWindow.classList.remove('show');
+            // Wait for the animation to complete before hiding
+            setTimeout(() => {
+                chatbotWindow.style.display = 'none';
+            }, 300);
+            isChatbotOpen = false;
+        });
+
+        // Close chatbot when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isChatbotOpen && 
+                !chatbotWindow.contains(e.target) && 
+                !chatbotButton.contains(e.target)) {
+                chatbotWindow.classList.remove('show');
+                setTimeout(() => {
+                    chatbotWindow.style.display = 'none';
+                }, 300);
+                isChatbotOpen = false;
+            }
+        });
+
+        // Send message
+        function sendUserMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                // Add user message
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.className = 'message user';
+                userMessageDiv.innerHTML = `<p>${message}</p>`;
+                chatbotMessages.appendChild(userMessageDiv);
+
+                // Clear input
+                messageInput.value = '';
+
+                // Scroll to bottom
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+                // Simulate bot response (replace with actual bot logic)
+                setTimeout(() => {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'message bot';
+                    botMessageDiv.innerHTML = `<p>আপনার প্রশ্নের জন্য ধন্যবাদ। আমি শীঘ্রই আপনার প্রশ্নের উত্তর দিব।</p>`;
+                    chatbotMessages.appendChild(botMessageDiv);
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // Send message on button click
+        sendMessage.addEventListener('click', sendUserMessage);
+
+        // Send message on Enter key
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendUserMessage();
+            }
+        });
+
+        // Save chatbot state in localStorage
+        window.addEventListener('beforeunload', () => {
+            localStorage.setItem('chatbotState', isChatbotOpen ? 'open' : 'closed');
+        });
+
+        // Restore chatbot state on page load
+        window.addEventListener('load', () => {
+            const savedState = localStorage.getItem('chatbotState');
+            if (savedState === 'open') {
+                chatbotWindow.style.display = 'flex';
+                setTimeout(() => {
+                    chatbotWindow.classList.add('show');
+                }, 10);
+                isChatbotOpen = true;
+            }
+        });
+    </script>
+</body>
+</html> 
