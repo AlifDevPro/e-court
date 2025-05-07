@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ড্যাশবোর্ড | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .sidebar-link.active {
+      background-color: #059669;
+      color: white;
+    }
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #EF4444;
+      color: white;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: 320px;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 50;
+    }
+    .notification-dropdown.show {
+      display: block;
+    }
+    /* Custom select styles */
+    .custom-select {
+      position: relative;
+    }
+    .custom-select select {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      background: white !important;
+    }
+    .custom-select select::-ms-expand {
+      display: none !important;
+    }
+    .custom-select select option {
+      display: none !important;
+    }
+    .lawyer-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 50;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .lawyer-option {
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .lawyer-option:hover {
+      background-color: #f3f4f6;
+    }
+    .lawyer-option.selected {
+      background-color: #ecfdf5;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Top Navigation -->
+  <nav class="bg-white shadow fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <a href="index.html" class="font-bold text-lg text-green-700 hover:text-green-800" id="logo">ই-ফেলিসিটি কোর্ট</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <!-- Language Switcher -->
+          <select id="lang-switch" class="px-2 py-1 border rounded">
+            <option value="bn">বাংলা</option>
+            <option value="en">English</option>
+          </select>
+
+          <!-- Notification Icon -->
+          <div class="relative">
+            <button id="notification-toggle" class="p-2 hover:bg-gray-100 rounded-full relative">
+              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+              </svg>
+              <span class="notification-badge">3</span>
+            </button>
+            
+            <!-- Notification Dropdown -->
+            <div id="notification-dropdown" class="notification-dropdown mt-2">
+              <div class="p-4 border-b">
+                <h3 class="font-semibold text-gray-900" id="notification-title">নোটিফিকেশন</h3>
+              </div>
+              <div class="max-h-96 overflow-y-auto">
+                <a href="#" class="block p-4 hover:bg-gray-50 border-b">
+                  <p class="text-sm text-gray-900" id="notification-1">আপনার মামলার তারিখ নির্ধারিত হয়েছে</p>
+                  <p class="text-xs text-gray-500 mt-1" id="notification-1-time">২ ঘন্টা আগে</p>
+                </a>
+                <a href="#" class="block p-4 hover:bg-gray-50 border-b">
+                  <p class="text-sm text-gray-900" id="notification-2">নতুন ডকুমেন্ট আপলোড করা হয়েছে</p>
+                  <p class="text-xs text-gray-500 mt-1" id="notification-2-time">১ দিন আগে</p>
+                </a>
+                <a href="#" class="block p-4 hover:bg-gray-50">
+                  <p class="text-sm text-gray-900" id="notification-3">আপনার পেমেন্ট সফল হয়েছে</p>
+                  <p class="text-xs text-gray-500 mt-1" id="notification-3-time">২ দিন আগে</p>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Profile -->
+          <div class="flex items-center space-x-3">
+            <img src="" 
+                 alt="Profile" 
+                 class="w-8 h-8 rounded-full user-avatar">
+            <div class="flex flex-col">
+              <span class="text-gray-700" id="user-name"></span>
+              <span class="text-sm text-gray-500" id="user-role"></span>
+            </div>
+            <button id="logout-btn" class="ml-2 text-gray-600 hover:text-gray-800">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="flex pt-16">
+    <!-- Sidebar -->
+    <div class="w-64 bg-white shadow-lg h-screen fixed">
+      <div class="p-4">
+        <nav class="space-y-2">
+          <a href="#case-filing" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700" id="case-filing-link">
+            মামলা দায়ের
+          </a>
+          <a href="#document-upload" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700" id="document-upload-link">
+            ডকুমেন্ট সংযোজন
+          </a>
+          <a href="#ongoing-cases" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700" id="ongoing-cases-link">
+            চলমান মামলা
+          </a>
+          <a href="#case-inclusion" class="sidebar-link block px-4 py-2 rounded-lg hover:bg-green-50 text-gray-700" id="case-inclusion-link">
+            মামলা অন্তর্ভুক্তি
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="ml-64 flex-1 p-8">
+      <!-- Case Filing Section -->
+      <div id="case-filing" class="content-section">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6" id="case-filing-title">মামলার বিবরণ</h2>
+        <form class="space-y-6 max-w-3xl">
+          <!-- Court Selection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" id="court-label">আদালত বাছাই করুন</label>
+            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500">
+              <option value="" id="select-court">আদালত নির্বাচন করুন</option>
+              <option value="dhaka">ঢাকা জজ কোর্ট</option>
+              <option value="chittagong">চট্টগ্রাম জজ কোর্ট</option>
+              <option value="rajshahi">রাজশাহী জজ কোর্ট</option>
+              <option value="khulna">খুলনা জজ কোর্ট</option>
+            </select>
+          </div>
+
+          <!-- Case Type -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" id="case-type-label">বিরোধের ধরণ বাছাই</label>
+            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500">
+              <option value="" id="select-case-type">বিরোধের ধরণ নির্বাচন করুন</option>
+              <option value="civil">সিভিল মামলা</option>
+              <option value="criminal">ক্রিমিনাল মামলা</option>
+              <option value="family">পারিবারিক মামলা</option>
+              <option value="property">জমি-জমা সংক্রান্ত মামলা</option>
+            </select>
+          </div>
+
+          <!-- Defendant Details -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" id="defendant-label">বিবাদির বিবরণ</label>
+            <div class="relative">
+              <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500" id="defendant-details"></textarea>
+              <div class="absolute bottom-2 right-2 flex space-x-2">
+                <button type="button" class="p-1 text-gray-500 hover:text-gray-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                  </svg>
+                </button>
+                <button type="button" class="p-1 text-gray-500 hover:text-gray-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Details -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" id="case-details-label">বিরোধের বিবরণ</label>
+            <div class="relative">
+              <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500" id="case-details"></textarea>
+              <div class="absolute bottom-2 right-2 flex space-x-2">
+                <button type="button" class="p-1 text-gray-500 hover:text-gray-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                  </svg>
+                </button>
+                <button type="button" class="p-1 text-gray-500 hover:text-gray-700">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lawyer Selection -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1" id="lawyer-label">আইনজীবী বাছাই</label>
+            <div class="custom-select">
+              <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500" id="lawyer-select">
+                <option value="">আইনজীবী নির্বাচন করুন</option>
+                <option value="1">আব্দুল হামিদ - সিনিয়র আইনজীবী</option>
+                <option value="2">রহিমা বেগম - ক্রিমিনাল ল'য়ার</option>
+                <option value="3">মোঃ সেলিম - সিভিল ল'য়ার</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+              </div>
+              <div id="lawyer-dropdown" class="lawyer-dropdown hidden">
+                <!-- Dropdown items will be populated by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="w-full bg-green-600 text-white py-3 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors" id="submit-case">
+            মামলা দায়ের
+          </button>
+        </form>
+      </div>
+
+      <!-- Document Upload Section -->
+      <div id="document-upload" class="content-section hidden">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6" id="document-title">ডকুমেন্ট সংযোজন</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Document Card 1 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-semibold text-gray-900" id="document-name">মামলার আবেদনপত্র</h3>
+                <p class="text-sm text-gray-500 mt-1" id="upload-date">আপলোড: ২০২৪-০৩-১৫</p>
+                <p class="text-sm text-gray-500" id="file-size">সাইজ: 2.5 MB</p>
+              </div>
+              <div class="relative">
+                <button class="p-1 hover:bg-gray-100 rounded-full">
+                  <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                  </svg>
+                </button>
+                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="view-doc">দেখুন</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="download-doc">ডাউনলোড</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100" id="delete-doc">মুছুন</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Card 2 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-semibold text-gray-900">জমির দলিল</h3>
+                <p class="text-sm text-gray-500 mt-1">আপলোড: ২০২৪-০৩-১৪</p>
+                <p class="text-sm text-gray-500">সাইজ: 4.2 MB</p>
+              </div>
+              <div class="relative">
+                <button class="p-1 hover:bg-gray-100 rounded-full">
+                  <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                  </svg>
+                </button>
+                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">দেখুন</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ডাউনলোড</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">মুছুন</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Card 3 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-semibold text-gray-900">সাক্ষীর বিবরণ</h3>
+                <p class="text-sm text-gray-500 mt-1">আপলোড: ২০২৪-০৩-১৩</p>
+                <p class="text-sm text-gray-500">সাইজ: 1.8 MB</p>
+              </div>
+              <div class="relative">
+                <button class="p-1 hover:bg-gray-100 rounded-full">
+                  <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                  </svg>
+                </button>
+                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">দেখুন</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">ডাউনলোড</a>
+                  <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">মুছুন</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ongoing Cases Section -->
+      <div id="ongoing-cases" class="content-section hidden">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6" id="ongoing-cases-title">চলমান মামলা</h2>
+        <!-- Search Bar -->
+        <div class="mb-6">
+          <div class="max-w-xl">
+            <div class="relative">
+              <input type="text" id="case-search" placeholder="ট্রেকিং নাম্বার দিয়ে সার্চ করুন" 
+                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500">
+              <button class="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case List -->
+        <div class="space-y-4">
+          <!-- Case Card 1 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">তারিখ: ২০২৪-০৩-১৫</p>
+                <h3 class="font-semibold text-gray-900 mt-1">মামলা নং: ২০২৪/১২৩৪</h3>
+                <p class="text-gray-600 mt-1">বনাম: জনাব মোঃ রহিম</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">বাদি</button>
+                <button class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">বিস্তারিত</button>
+                <button class="px-3 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200">ডকুমেন্ট</button>
+                <button class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200">জুডি-পে</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Card 2 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">তারিখ: ২০২৪-০৩-১০</p>
+                <h3 class="font-semibold text-gray-900 mt-1">মামলা নং: ২০২৪/১১৫৬</h3>
+                <p class="text-gray-600 mt-1">বনাম: জনাব আব্দুল করিম</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">বাদি</button>
+                <button class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">বিস্তারিত</button>
+                <button class="px-3 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200">ডকুমেন্ট</button>
+                <button class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200">জুডি-পে</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Card 3 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">তারিখ: ২০২৪-০৩-০৫</p>
+                <h3 class="font-semibold text-gray-900 mt-1">মামলা নং: ২০২৪/১০৮৯</h3>
+                <p class="text-gray-600 mt-1">বনাম: জনাব নুরুল আমিন</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">বাদি</button>
+                <button class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">বিস্তারিত</button>
+                <button class="px-3 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200">ডকুমেন্ট</button>
+                <button class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200">জুডি-পে</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Inclusion Section -->
+      <div id="case-inclusion" class="content-section hidden">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6" id="case-inclusion-title">মামলা অন্তর্ভুক্তি</h2>
+        <!-- Search Bar -->
+        <div class="mb-6">
+          <div class="max-w-xl">
+            <div class="relative">
+              <input type="text" id="inclusion-search" placeholder="ট্রেকিং নাম্বার দিয়ে সার্চ করুন" 
+                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500">
+              <button class="absolute right-2 top-2 text-gray-500 hover:text-gray-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case List -->
+        <div class="space-y-4">
+          <!-- Case Card 1 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">তারিখ: ২০২৪-০৩-১৫</p>
+                <h3 class="font-semibold text-gray-900 mt-1">মামলা নং: ২০২৪/১২৩৪</h3>
+                <p class="text-gray-600 mt-1">বনাম: জনাব মোঃ রহিম</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">দেখুন</button>
+                <button class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">অন্তর্ভুক্ত</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Card 2 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">তারিখ: ২০২৪-০৩-১২</p>
+                <h3 class="font-semibold text-gray-900 mt-1">মামলা নং: ২০২৪/১২০১</h3>
+                <p class="text-gray-600 mt-1">বনাম: জনাব সেলিম আহমেদ</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">দেখুন</button>
+                <button class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">অন্তর্ভুক্ত</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Card 3 -->
+          <div class="bg-white rounded-lg shadow p-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">তারিখ: ২০২৪-০৩-১৪</p>
+                <h3 class="font-semibold text-gray-900 mt-1">মামলা নং: ২০২৪/১২২০</h3>
+                <p class="text-gray-600 mt-1">বনাম: জনাব রহিমা বেগম</p>
+              </div>
+              <div class="flex space-x-2">
+                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200">দেখুন</button>
+                <button class="px-3 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200">অন্তর্ভুক্ত</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Test user credentials
+    const testUsers = {
+      'test@example.com': {
+        password: 'password123',
+        name: 'জন ডো',
+        role: 'user'
+      },
+      'lawyer@example.com': {
+        password: 'lawyer123',
+        name: 'অ্যাডভোকেট রহমান',
+        role: 'lawyer'
+      },
+      'judge@example.com': {
+        password: 'judge123',
+        name: 'বিচারক করিম',
+        role: 'judge'
+      }
+    };
+
+    // Check if user is logged in and set user information
+    window.addEventListener('load', () => {
+      console.log('Dashboard loaded, checking login status...'); // Debug log
+      
+      if (localStorage.getItem('isLoggedIn') !== 'true') {
+        console.log('User not logged in, redirecting to login page'); // Debug log
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const userEmail = localStorage.getItem('userEmail');
+      console.log('Retrieved user email from localStorage:', userEmail); // Debug log
+      
+      const user = testUsers[userEmail];
+      console.log('Found user data:', user); // Debug log
+      
+      if (user) {
+        // Update user name
+        const userNameElement = document.getElementById('user-name');
+        userNameElement.textContent = user.name;
+        console.log('Updated user name to:', user.name); // Debug log
+        
+        // Update user role
+        const roleElement = document.getElementById('user-role');
+        roleElement.textContent = ''; // Clear existing role
+        roleElement.className = 'text-sm text-gray-500'; // Reset classes
+        
+        if (user.role === 'lawyer') {
+          roleElement.textContent = 'আইনজীবী';
+          roleElement.classList.add('text-green-600');
+        } else if (user.role === 'judge') {
+          roleElement.textContent = 'বিচারক';
+          roleElement.classList.add('text-blue-600');
+        }
+        console.log('Updated user role to:', user.role); // Debug log
+        
+        // Update avatar with user's name
+        const avatarElement = document.querySelector('.user-avatar');
+        const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=059669&color=fff`;
+        avatarElement.src = avatarUrl;
+        console.log('Updated avatar URL:', avatarUrl); // Debug log
+      } else {
+        console.log('User not found in testUsers, redirecting to login'); // Debug log
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Logout functionality
+    const logoutBtn = document.getElementById('logout-btn');
+    logoutBtn.addEventListener('click', () => {
+      console.log('Logging out, clearing localStorage'); // Debug log
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
+
+    // Language data
+    const langData = {
+      bn: {
+        logo: 'ই-ফেলিসিটি কোর্ট',
+        notificationTitle: 'নোটিফিকেশন',
+        notification1: 'আপনার মামলার তারিখ নির্ধারিত হয়েছে',
+        notification1Time: '২ ঘন্টা আগে',
+        notification2: 'নতুন ডকুমেন্ট আপলোড করা হয়েছে',
+        notification2Time: '১ দিন আগে',
+        notification3: 'আপনার পেমেন্ট সফল হয়েছে',
+        notification3Time: '২ দিন আগে',
+        caseFiling: 'মামলা দায়ের',
+        documentUpload: 'ডকুমেন্ট সংযোজন',
+        ongoingCases: 'চলমান মামলা',
+        caseInclusion: 'মামলা অন্তর্ভুক্তি',
+        caseFilingTitle: 'মামলার বিবরণ',
+        courtLabel: 'আদালত বাছাই করুন',
+        selectCourt: 'আদালত নির্বাচন করুন',
+        caseTypeLabel: 'বিরোধের ধরণ বাছাই',
+        selectCaseType: 'বিরোধের ধরণ নির্বাচন করুন',
+        defendantLabel: 'বিবাদির বিবরণ',
+        caseDetailsLabel: 'বিরোধের বিবরণ',
+        lawyerLabel: 'আইনজীবী বাছাই',
+        selectLawyer: 'আইনজীবী নির্বাচন করুন',
+        submitCase: 'মামলা দায়ের',
+        documentTitle: 'ডকুমেন্ট সংযোজন',
+        documentName: 'মামলার আবেদনপত্র',
+        uploadDate: 'আপলোড: ২০২৪-০৩-১৫',
+        fileSize: 'সাইজ: 2.5 MB',
+        viewDoc: 'দেখুন',
+        downloadDoc: 'ডাউনলোড',
+        deleteDoc: 'মুছুন',
+        ongoingCasesTitle: 'চলমান মামলা',
+        caseSearch: 'ট্রেকিং নাম্বার দিয়ে সার্চ করুন',
+        caseDate: 'তারিখ: ২০২৪-০৩-১৫',
+        caseNumber: 'মামলা নং: ২০২৪/১২৩৪',
+        caseAgainst: 'বনাম: জনাব মোঃ রহিম',
+        plaintiffBtn: 'বাদি',
+        detailsBtn: 'বিস্তারিত',
+        documentsBtn: 'ডকুমেন্ট',
+        judiPayBtn: 'জুডি-পে',
+        caseInclusionTitle: 'মামলা অন্তর্ভুক্তি',
+        inclusionSearch: 'ট্রেকিং নাম্বার দিয়ে সার্চ করুন',
+        inclusionDate: 'তারিখ: ২০২৪-০৩-১৫',
+        inclusionNumber: 'মামলা নং: ২০২৪/১২৩৪',
+        inclusionAgainst: 'বনাম: জনাব মোঃ রহিম',
+        viewBtn: 'দেখুন',
+        includeBtn: 'অন্তর্ভুক্ত'
+      },
+      en: {
+        logo: 'E-Felicity Court',
+        notificationTitle: 'Notifications',
+        notification1: 'Your case date has been scheduled',
+        notification1Time: '2 hours ago',
+        notification2: 'New document has been uploaded',
+        notification2Time: '1 day ago',
+        notification3: 'Your payment was successful',
+        notification3Time: '2 days ago',
+        caseFiling: 'File Case',
+        documentUpload: 'Upload Documents',
+        ongoingCases: 'Ongoing Cases',
+        caseInclusion: 'Case Inclusion',
+        caseFilingTitle: 'Case Details',
+        courtLabel: 'Select Court',
+        selectCourt: 'Select a court',
+        caseTypeLabel: 'Select Case Type',
+        selectCaseType: 'Select case type',
+        defendantLabel: 'Defendant Details',
+        caseDetailsLabel: 'Case Details',
+        lawyerLabel: 'Select Lawyer',
+        selectLawyer: 'Select a lawyer',
+        submitCase: 'File Case',
+        documentTitle: 'Upload Documents',
+        documentName: 'Case Application',
+        uploadDate: 'Uploaded: 2024-03-15',
+        fileSize: 'Size: 2.5 MB',
+        viewDoc: 'View',
+        downloadDoc: 'Download',
+        deleteDoc: 'Delete',
+        ongoingCasesTitle: 'Ongoing Cases',
+        caseSearch: 'Search by tracking number',
+        caseDate: 'Date: 2024-03-15',
+        caseNumber: 'Case No: 2024/1234',
+        caseAgainst: 'Versus: Mr. Md. Rahim',
+        plaintiffBtn: 'Plaintiff',
+        detailsBtn: 'Details',
+        documentsBtn: 'Documents',
+        judiPayBtn: 'Judi-Pay',
+        caseInclusionTitle: 'Case Inclusion',
+        inclusionSearch: 'Search by tracking number',
+        inclusionDate: 'Date: 2024-03-15',
+        inclusionNumber: 'Case No: 2024/1234',
+        inclusionAgainst: 'Versus: Mr. Md. Rahim',
+        viewBtn: 'View',
+        includeBtn: 'Include'
+      }
+    };
+
+    // Language switcher
+    const langSwitch = document.getElementById('lang-switch');
+    
+    function updateLanguage(lang) {
+      // Update all text content
+      const elements = {
+        'logo': langData[lang].logo,
+        'notification-title': langData[lang].notificationTitle,
+        'notification-1': langData[lang].notification1,
+        'notification-1-time': langData[lang].notification1Time,
+        'notification-2': langData[lang].notification2,
+        'notification-2-time': langData[lang].notification2Time,
+        'notification-3': langData[lang].notification3,
+        'notification-3-time': langData[lang].notification3Time,
+        'case-filing-link': langData[lang].caseFiling,
+        'document-upload-link': langData[lang].documentUpload,
+        'ongoing-cases-link': langData[lang].ongoingCases,
+        'case-inclusion-link': langData[lang].caseInclusion,
+        'case-filing-title': langData[lang].caseFilingTitle,
+        'court-label': langData[lang].courtLabel,
+        'select-court': langData[lang].selectCourt,
+        'case-type-label': langData[lang].caseTypeLabel,
+        'select-case-type': langData[lang].selectCaseType,
+        'defendant-label': langData[lang].defendantLabel,
+        'case-details-label': langData[lang].caseDetailsLabel,
+        'lawyer-label': langData[lang].lawyerLabel,
+        'select-lawyer': langData[lang].selectLawyer,
+        'submit-case': langData[lang].submitCase,
+        'document-title': langData[lang].documentTitle,
+        'document-name': langData[lang].documentName,
+        'upload-date': langData[lang].uploadDate,
+        'file-size': langData[lang].fileSize,
+        'view-doc': langData[lang].viewDoc,
+        'download-doc': langData[lang].downloadDoc,
+        'delete-doc': langData[lang].deleteDoc,
+        'ongoing-cases-title': langData[lang].ongoingCasesTitle,
+        'case-search': langData[lang].caseSearch,
+        'case-inclusion-title': langData[lang].caseInclusionTitle,
+        'inclusion-search': langData[lang].inclusionSearch
+      };
+
+      // Update text content for each element
+      for (const [id, text] of Object.entries(elements)) {
+        const element = document.getElementById(id);
+        if (element) {
+          if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            element.placeholder = text;
+          } else {
+            element.textContent = text;
+          }
+        }
+      }
+
+      // Update select options
+      const courtSelect = document.querySelector('select[value="dhaka"]');
+      if (courtSelect) {
+        courtSelect.innerHTML = `
+          <option value="">${langData[lang].selectCourt}</option>
+          <option value="dhaka">${lang === 'bn' ? 'ঢাকা জজ কোর্ট' : 'Dhaka Judge Court'}</option>
+          <option value="chittagong">${lang === 'bn' ? 'চট্টগ্রাম জজ কোর্ট' : 'Chittagong Judge Court'}</option>
+          <option value="rajshahi">${lang === 'bn' ? 'রাজশাহী জজ কোর্ট' : 'Rajshahi Judge Court'}</option>
+          <option value="khulna">${lang === 'bn' ? 'খুলনা জজ কোর্ট' : 'Khulna Judge Court'}</option>
+        `;
+      }
+
+      const caseTypeSelect = document.querySelector('select[value="civil"]');
+      if (caseTypeSelect) {
+        caseTypeSelect.innerHTML = `
+          <option value="">${langData[lang].selectCaseType}</option>
+          <option value="civil">${lang === 'bn' ? 'সিভিল মামলা' : 'Civil Case'}</option>
+          <option value="criminal">${lang === 'bn' ? 'ক্রিমিনাল মামলা' : 'Criminal Case'}</option>
+          <option value="family">${lang === 'bn' ? 'পারিবারিক মামলা' : 'Family Case'}</option>
+          <option value="property">${lang === 'bn' ? 'জমি-জমা সংক্রান্ত মামলা' : 'Property Case'}</option>
+        `;
+      }
+
+      // Update user role
+      const userEmail = localStorage.getItem('userEmail');
+      if (userEmail) {
+        const user = testUsers[userEmail];
+        if (user) {
+          const roleElement = document.getElementById('user-role');
+          if (roleElement) {
+            roleElement.textContent = lang === 'bn' 
+              ? (user.role === 'lawyer' ? 'আইনজীবী' : user.role === 'judge' ? 'বিচারক' : 'ব্যবহারকারী')
+              : (user.role === 'lawyer' ? 'Lawyer' : user.role === 'judge' ? 'Judge' : 'User');
+          }
+        }
+      }
+
+      document.documentElement.lang = lang;
+    }
+
+    // Set initial language
+    updateLanguage(langSwitch.value);
+
+    // Add event listener for language switch
+    langSwitch.addEventListener('change', (e) => updateLanguage(e.target.value));
+
+    // Notification Toggle
+    const notificationToggle = document.getElementById('notification-toggle');
+    const notificationDropdown = document.getElementById('notification-dropdown');
+    
+    notificationToggle.addEventListener('click', () => {
+      notificationDropdown.classList.toggle('show');
+    });
+
+    // Close notification dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!notificationToggle.contains(e.target) && !notificationDropdown.contains(e.target)) {
+        notificationDropdown.classList.remove('show');
+      }
+    });
+
+    // Sidebar Navigation
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Remove active class from all links
+        sidebarLinks.forEach(l => l.classList.remove('active'));
+        
+        // Add active class to clicked link
+        link.classList.add('active');
+        
+        // Hide all content sections
+        contentSections.forEach(section => section.classList.add('hidden'));
+        
+        // Show the corresponding content section
+        const targetId = link.getAttribute('href').substring(1);
+        document.getElementById(targetId).classList.remove('hidden');
+      });
+    });
+
+    // Set initial active state
+    document.getElementById('case-filing-link').click();
+
+    // Document action menu toggle
+    const actionButtons = document.querySelectorAll('.relative button');
+    actionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const menu = button.nextElementSibling;
+        menu.classList.toggle('hidden');
+      });
+    });
+
+    // Close document action menus when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.relative')) {
+        document.querySelectorAll('.relative .hidden').forEach(menu => {
+          menu.classList.add('hidden');
+        });
+      }
+    });
+
+    // Custom dropdown styling
+    const lawyerSelect = document.getElementById('lawyer-select');
+    const lawyerDropdown = document.getElementById('lawyer-dropdown');
+    
+    // Prevent native dropdown from showing
+    lawyerSelect.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      lawyerDropdown.classList.toggle('hidden');
+    });
+
+    const lawyers = [
+      {
+        id: '1',
+        name: 'আব্দুল হামিদ',
+        designation: 'সিনিয়র আইনজীবী',
+        image: 'https://ui-avatars.com/api/?name=আব্দুল+হামিদ&background=059669&color=fff'
+      },
+      {
+        id: '2',
+        name: 'রহিমা বেগম',
+        designation: 'ক্রিমিনাল লয়ার',
+        image: 'https://ui-avatars.com/api/?name=রহিমা+বেগম&background=059669&color=fff'
+      },
+      {
+        id: '3',
+        name: 'মোঃ সেলিম',
+        designation: 'সিভিল লয়ার',
+        image: 'https://ui-avatars.com/api/?name=মোঃ+সেলিম&background=059669&color=fff'
+      }
+    ];
+
+    // Create custom dropdown items
+    lawyers.forEach(lawyer => {
+      const item = document.createElement('div');
+      item.className = 'lawyer-option';
+      item.innerHTML = `
+        <div class="flex items-center space-x-4">
+          <img src="${lawyer.image}" alt="${lawyer.name}" class="w-12 h-12 rounded-full">
+          <div>
+            <h3 class="font-semibold text-gray-900">${lawyer.name}</h3>
+            <p class="text-sm text-gray-500">${lawyer.designation}</p>
+          </div>
+        </div>
+      `;
+      item.addEventListener('click', () => {
+        lawyerSelect.value = lawyer.id;
+        lawyerDropdown.classList.add('hidden');
+        // Update selected state
+        document.querySelectorAll('.lawyer-option').forEach(opt => opt.classList.remove('selected'));
+        item.classList.add('selected');
+      });
+      lawyerDropdown.appendChild(item);
+    });
+
+    // Show/hide custom dropdown
+    lawyerSelect.addEventListener('focus', () => {
+      lawyerDropdown.classList.remove('hidden');
+    });
+
+    lawyerSelect.addEventListener('blur', () => {
+      setTimeout(() => {
+        lawyerDropdown.classList.add('hidden');
+      }, 200);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!lawyerSelect.contains(e.target) && !lawyerDropdown.contains(e.target)) {
+        lawyerDropdown.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html> 
