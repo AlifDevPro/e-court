@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সাইন আপ | Sign Up</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .chatbot-minimized { height: 48px !important; }
+    @media (min-width: 769px) {
+      .mobile-menu-button { display: none; }
+      .mobile-menu-items { display: none; }
+    }
+    @media (max-width: 768px) {
+      .desktop-menu { display: none; }
+      .mobile-menu-items {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        padding: 1rem;
+        z-index: 50;
+      }
+      .mobile-menu-items.show {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <nav class="bg-white shadow fixed w-full top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <a href="index.html" class="font-bold text-lg text-green-700 hover:text-green-800" id="logo">ই-ফেমিলি কোর্ট</a>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="desktop-menu flex items-center space-x-4">
+          <a href="index.html" class="text-gray-700 hover:text-green-700" id="case-tracking">কেস ট্র্যাকিং</a>
+          <a href="#" class="text-gray-700 hover:text-green-700" id="new-application">নকল উত্তোলন</a>
+          <a href="judi-pay.html" class="text-gray-700 hover:text-green-700" id="notice">জুডি-পে</a>
+          <a href="signup.html" class="px-3 py-1 bg-white border rounded hover:bg-gray-100" id="login">সাইন ইন / রেজি ইর</a>
+          <select id="lang-switch" class="ml-2 px-2 py-1 border rounded">
+            <option value="bn">বাংলা</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-button text-2xl p-2" id="mobile-menu-toggle">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Items -->
+  <div class="mobile-menu-items" id="mobile-menu">
+    <div class="flex flex-col space-y-4">
+      <a href="index.html" class="text-xl text-gray-700 hover:text-green-700" id="mobile-case-tracking">কেস ট্র্যাকিং</a>
+      <a href="#" class="text-xl text-gray-700 hover:text-green-700" id="mobile-new-application">নকল উত্তোলন</a>
+      <a href="judi-pay.html" class="text-xl text-gray-700 hover:text-green-700" id="mobile-notice">জুডি-পে</a>
+      <a href="signup.html" class="text-xl px-3 py-2 bg-white border rounded hover:bg-gray-100 text-left" id="mobile-login">সাইন ইন / রেজি ইর</a>
+      <select id="mobile-lang-switch" class="text-xl w-full px-2 py-2 border rounded mt-4">
+        <option value="bn">বাংলা</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-4 py-2 sm:py-8 mt-16">
+    <div class="w-full max-w-md mx-auto">
+      <!-- Page Title -->
+      <div class="text-center mb-2 sm:mb-6">
+        <h1 class="text-xl sm:text-3xl font-bold text-gray-800" id="page-title">সাইন আপ</h1>
+        <p class="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base" id="page-subtitle">নতুন অ্যাকাউন্ট তৈরি করুন</p>
+      </div>
+
+      <!-- Special Login Options -->
+      <div class="bg-blue-50 rounded-none sm:rounded-lg p-2 sm:p-4 mb-2 sm:mb-6">
+        <div class="flex justify-center">
+          <a href="#" class="text-blue-700 hover:text-blue-800 font-medium text-sm sm:text-base" id="lawyer-link">আইনজীবী/বিচারক এখানে ক্লিক করুন</a>
+        </div>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="bg-white rounded-none sm:rounded-lg shadow-lg p-2 sm:p-6">
+        <form class="space-y-3 sm:space-y-4">
+          <!-- Full Name -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+            <div>
+              <label for="full-name" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="full-name-label">পূর্ণ নাম</label>
+              <input type="text" id="full-name" name="full-name" 
+                     class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                     placeholder="আপনার পূর্ণ নাম লিখুন">
+            </div>
+
+            <!-- NID Number -->
+            <div>
+              <label for="nid" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="nid-label">এনআইডি নম্বর</label>
+              <input type="text" id="nid" name="nid" 
+                     class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                     placeholder="আপনার এনআইডি নম্বর লিখুন">
+            </div>
+          </div>
+
+          <!-- Mobile and Email -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+            <div>
+              <label for="mobile" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="mobile-label">মোবাইল নম্বর</label>
+              <input type="tel" id="mobile" name="mobile" 
+                     class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                     placeholder="আপনার মোবাইল নম্বর লিখুন">
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="email-label">ইমেইল ঠিকানা</label>
+              <input type="email" id="email" name="email" 
+                     class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                     placeholder="আপনার ইমেইল ঠিকানা লিখুন">
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div>
+            <label for="address" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="address-label">ঠিকানা</label>
+            <textarea id="address" name="address" rows="2"
+                      class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="আপনার ঠিকানা লিখুন"></textarea>
+          </div>
+
+          <!-- Password Fields -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="password-label">পাসওয়ার্ড</label>
+              <input type="password" id="password" name="password" 
+                     class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                     placeholder="পাসওয়ার্ড লিখুন">
+            </div>
+
+            <div>
+              <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-0.5 sm:mb-1" id="confirm-password-label">পাসওয়ার্ড নিশ্চিত করুন</label>
+              <input type="password" id="confirm-password" name="confirm-password" 
+                     class="w-full px-2 sm:px-4 py-1.5 sm:py-2 border border-gray-300 rounded-none sm:rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                     placeholder="পাসওয়ার্ড আবার লিখুন">
+            </div>
+          </div>
+
+          <!-- Face Verification Button -->
+          <div class="flex justify-center mt-2 sm:mt-4">
+            <button type="submit" id="face-verification" 
+                    class="w-full md:w-auto px-4 sm:px-8 py-2 sm:py-3 bg-green-600 text-white rounded-none sm:rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
+              <span class="flex items-center justify-center">
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span id="face-verification-text" class="text-sm sm:text-base">ফেস ভেরিফিকেশন</span>
+              </span>
+            </button>
+          </div>
+
+          <!-- Login Link -->
+          <div class="text-center mt-2 sm:mt-4">
+            <a href="login.html" class="text-blue-600 hover:text-blue-800 text-sm sm:text-base" id="login-link">ইতিমধ্যে রেজিস্টার্ড? লগইন করুন</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Chatbot -->
+  <div id="chatbot" class="fixed bottom-4 right-4 w-80 bg-white shadow-lg rounded-lg flex flex-col transition-all" style="height: 400px;">
+    <div class="flex items-center justify-between bg-gray-200 px-3 py-2 rounded-t-lg">
+      <span id="chatbot-title">চ্যাট বট</span>
+      <button id="chatbot-toggle" class="text-xl font-bold">&#x2922;</button>
+    </div>
+    <div class="flex-1 p-3 overflow-y-auto" id="chatbot-messages">
+      <div class="text-center text-gray-500 mt-8" id="chatbot-welcome">কিভাবে আপনাকে সাহায্য করতে পারি?</div>
+    </div>
+    <form class="flex items-center border-t px-2 py-2" id="chatbot-form">
+      <input type="text" class="flex-1 border rounded px-2 py-1" placeholder="প্রশ্ন করুন" id="chatbot-input">
+      <button type="submit" class="ml-2 text-2xl">&#x27A4;</button>
+    </form>
+  </div>
+
+  <script>
+    // Language data
+    const langData = {
+      bn: {
+        logo: 'ই-ফেমিলি কোর্ট',
+        caseTracking: 'কেস ট্র্যাকিং',
+        newApplication: 'নকল উত্তোলন',
+        notice: 'জুডি-পে',
+        login: 'সাইন ইন / রেজি ইর',
+        chatbotTitle: 'চ্যাট বট',
+        chatbotWelcome: 'কিভাবে আপনাকে সাহায্য করতে পারি?',
+        chatbotInput: 'প্রশ্ন করুন',
+        pageTitle: 'সাইন আপ',
+        pageSubtitle: 'নতুন অ্যাকাউন্ট তৈরি করুন',
+        lawyerLink: 'আইনজীবী/বিচারক এখানে ক্লিক করুন',
+        loginLink: 'ইতিমধ্যে রেজিস্টার্ড? লগইন করুন',
+        fullNameLabel: 'পূর্ণ নাম',
+        fullNamePlaceholder: 'আপনার পূর্ণ নাম লিখুন',
+        nidLabel: 'এনআইডি নম্বর',
+        nidPlaceholder: 'আপনার এনআইডি নম্বর লিখুন',
+        mobileLabel: 'মোবাইল নম্বর',
+        mobilePlaceholder: 'আপনার মোবাইল নম্বর লিখুন',
+        emailLabel: 'ইমেইল ঠিকানা',
+        emailPlaceholder: 'আপনার ইমেইল ঠিকানা লিখুন',
+        addressLabel: 'ঠিকানা',
+        addressPlaceholder: 'আপনার ঠিকানা লিখুন',
+        passwordLabel: 'পাসওয়ার্ড',
+        passwordPlaceholder: 'পাসওয়ার্ড লিখুন',
+        confirmPasswordLabel: 'পাসওয়ার্ড নিশ্চিত করুন',
+        confirmPasswordPlaceholder: 'পাসওয়ার্ড আবার লিখুন',
+        faceVerificationText: 'ফেস ভেরিফিকেশন',
+        signupButton: 'সাইন আপ করুন'
+      },
+      en: {
+        logo: 'E-Family Court',
+        caseTracking: 'Case Tracking',
+        newApplication: 'Certified Copy',
+        notice: 'Judi-Pay',
+        login: 'Sign In / Register',
+        chatbotTitle: 'Chatbot',
+        chatbotWelcome: 'How can I assist you?',
+        chatbotInput: 'Ask a question',
+        pageTitle: 'Sign Up',
+        pageSubtitle: 'Create a new account',
+        lawyerLink: 'Lawyer/Judge Click Here',
+        loginLink: 'Already registered? Login',
+        fullNameLabel: 'Full Name',
+        fullNamePlaceholder: 'Enter your full name',
+        nidLabel: 'NID Number',
+        nidPlaceholder: 'Enter your NID number',
+        mobileLabel: 'Mobile Number',
+        mobilePlaceholder: 'Enter your mobile number',
+        emailLabel: 'Email Address',
+        emailPlaceholder: 'Enter your email address',
+        addressLabel: 'Address',
+        addressPlaceholder: 'Enter your address',
+        passwordLabel: 'Password',
+        passwordPlaceholder: 'Enter password',
+        confirmPasswordLabel: 'Confirm Password',
+        confirmPasswordPlaceholder: 'Re-enter password',
+        faceVerificationText: 'Face Verification',
+        signupButton: 'Sign Up'
+      }
+    };
+
+    // Language switcher
+    const langSwitch = document.getElementById('lang-switch');
+    const mobileLangSwitch = document.getElementById('mobile-lang-switch');
+    const updateLanguage = (lang) => {
+      document.getElementById('logo').textContent = langData[lang].logo;
+      document.getElementById('case-tracking').textContent = langData[lang].caseTracking;
+      document.getElementById('new-application').textContent = langData[lang].newApplication;
+      document.getElementById('notice').textContent = langData[lang].notice;
+      document.getElementById('login').textContent = langData[lang].login;
+      document.getElementById('mobile-case-tracking').textContent = langData[lang].caseTracking;
+      document.getElementById('mobile-new-application').textContent = langData[lang].newApplication;
+      document.getElementById('mobile-notice').textContent = langData[lang].notice;
+      document.getElementById('mobile-login').textContent = langData[lang].login;
+      document.getElementById('chatbot-title').textContent = langData[lang].chatbotTitle;
+      document.getElementById('chatbot-welcome').textContent = langData[lang].chatbotWelcome;
+      document.getElementById('chatbot-input').placeholder = langData[lang].chatbotInput;
+      document.getElementById('page-title').textContent = langData[lang].pageTitle;
+      document.getElementById('page-subtitle').textContent = langData[lang].pageSubtitle;
+      document.getElementById('lawyer-link').textContent = langData[lang].lawyerLink;
+      document.getElementById('login-link').textContent = langData[lang].loginLink;
+      document.getElementById('full-name-label').textContent = langData[lang].fullNameLabel;
+      document.getElementById('full-name').placeholder = langData[lang].fullNamePlaceholder;
+      document.getElementById('nid-label').textContent = langData[lang].nidLabel;
+      document.getElementById('nid').placeholder = langData[lang].nidPlaceholder;
+      document.getElementById('mobile-label').textContent = langData[lang].mobileLabel;
+      document.getElementById('mobile').placeholder = langData[lang].mobilePlaceholder;
+      document.getElementById('email-label').textContent = langData[lang].emailLabel;
+      document.getElementById('email').placeholder = langData[lang].emailPlaceholder;
+      document.getElementById('address-label').textContent = langData[lang].addressLabel;
+      document.getElementById('address').placeholder = langData[lang].addressPlaceholder;
+      document.getElementById('password-label').textContent = langData[lang].passwordLabel;
+      document.getElementById('password').placeholder = langData[lang].passwordPlaceholder;
+      document.getElementById('confirm-password-label').textContent = langData[lang].confirmPasswordLabel;
+      document.getElementById('confirm-password').placeholder = langData[lang].confirmPasswordPlaceholder;
+      document.getElementById('face-verification-text').textContent = langData[lang].faceVerificationText;
+      document.getElementById('signup-button').textContent = langData[lang].signupButton;
+      document.documentElement.lang = lang;
+    };
+    langSwitch.addEventListener('change', (e) => updateLanguage(e.target.value));
+    mobileLangSwitch.addEventListener('change', (e) => updateLanguage(e.target.value));
+
+    // Mobile menu toggle with animation
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+      mobileMenuToggle.innerHTML = mobileMenu.classList.contains('show') ? '✕' : '☰';
+    });
+
+    // Chatbot minimize/maximize
+    const chatbot = document.getElementById('chatbot');
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    let minimized = false;
+    chatbotToggle.addEventListener('click', () => {
+      minimized = !minimized;
+      if (minimized) {
+        chatbot.classList.add('chatbot-minimized');
+        chatbot.style.height = '48px';
+      } else {
+        chatbot.classList.remove('chatbot-minimized');
+        chatbot.style.height = '400px';
+      }
+    });
+
+    // Face Verification
+    const faceVerificationBtn = document.getElementById('face-verification');
+    faceVerificationBtn.addEventListener('click', () => {
+      // Here you would implement the camera access and face verification logic
+      alert('Camera access requested for face verification');
+    });
+  </script>
+</body>
+</html> 

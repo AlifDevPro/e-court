@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ড্যাশবোর্ড | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .sidebar-link.active {
+      background-color: #059669;
+      color: white;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #EF4444;
+      color: white;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: 320px;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 50;
+    }
+
+    .notification-dropdown.show {
+      display: block;
+    }
+
+    /* Custom select styles */
+    .custom-select {
+      position: relative;
+    }
+
+    .custom-select select {
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      background: white !important;
+    }
+
+    .custom-select select::-ms-expand {
+      display: none !important;
+    }
+
+    .custom-select select option {
+      display: none !important;
+    }
+
+    .lawyer-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 50;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .lawyer-option {
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .lawyer-option:hover {
+      background-color: #f3f4f6;
+    }
+
+    .lawyer-option.selected {
+      background-color: #ecfdf5;
+    }
+
+    .progress-bar {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #E5E7EB;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background-color: #3B82F6;
+    }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#00AF58',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <script>
+    // Role-based rendering: Only show client dashboard for role 'user'
+    const testUsers = {
+      'test@example.com': {
+        password: 'password123',
+        name: 'জন ডো',
+        role: 'user'
+      },
+      'lawyer@example.com': {
+        password: 'lawyer123',
+        name: 'অ্যাডভোকেট রহমান',
+        role: 'lawyer'
+      },
+      'judge@example.com': {
+        password: 'judge123',
+        name: 'বিচারক করিম',
+        role: 'judge'
+      }
+    };
+
+    const userEmail = localStorage.getItem('userEmail');
+    const user = testUsers[userEmail];
+    if (!user || user.role !== 'user') {
+      window.location.href = '/login.html';
+    }
+  </script>
+  <div class="flex min-h-screen">
+    <!-- Left Column: Project Title + Sidebar -->
+    <div class="flex flex-col w-84 bg-white  min-h-screen justify-between">
+      <div class="flex flex-col gap-4">
+        <div class="px-8 pt-8 pb-6">
+          <span class="text-2xl font-bold text-gray-900 tracking-tight">DIU LAW PROJECT</span>
+        </div>
+        <nav class="space-y-2 px-4">
+          <a href="/user/dashboard.html" style="background-color: #00AF58"
+            class="text-sm flex items-center px-4 py-4 rounded-xl text-white">
+            <span class="mr-3">
+              <svg width="25" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <mask id="mask0_8121_67" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="32"
+                  height="32">
+                  <rect width="32" height="32" fill="white" />
+                </mask>
+                <g mask="url(#mask0_8121_67)">
+                  <path
+                    d="M13.6704 7.84579L14.0416 13.3657L14.2258 16.1401C14.2278 16.4255 14.2725 16.7089 14.3588 16.9813C14.5813 17.5101 15.1168 17.8461 15.6993 17.8227L24.5756 17.242C24.96 17.2357 25.3312 17.3795 25.6074 17.6417C25.8377 17.8603 25.9864 18.1461 26.0333 18.4536L26.049 18.6403C25.6817 23.7265 21.9461 27.9689 16.8704 29.064C11.7946 30.1591 6.58965 27.8457 4.08145 23.3799C3.35836 22.0824 2.90671 20.6564 2.75301 19.1853C2.68881 18.7499 2.66055 18.31 2.66848 17.87C2.66055 12.417 6.5438 7.70262 11.9796 6.5661C12.6339 6.46422 13.2752 6.81057 13.5376 7.40738C13.6054 7.54559 13.6502 7.69362 13.6704 7.84579Z"
+                    fill="#ffffff" />
+                  <path opacity="0.4"
+                    d="M29.3335 13.083L29.3242 13.1264L29.2973 13.1896L29.301 13.3631C29.2871 13.5929 29.1983 13.8139 29.0455 13.9926C28.8862 14.1786 28.6686 14.3053 28.429 14.3545L28.2829 14.3745L18.0418 15.0381C17.7011 15.0717 17.3619 14.9618 17.1087 14.7359C16.8975 14.5475 16.7626 14.2934 16.7245 14.0195L16.0371 3.79334C16.0251 3.75877 16.0251 3.72129 16.0371 3.6867C16.0465 3.40482 16.1706 3.13838 16.3817 2.9469C16.5926 2.75542 16.8731 2.65486 17.1602 2.66769C23.2401 2.82237 28.3499 7.19431 29.3335 13.083Z"
+                    fill="#ffffff" />
+                </g>
+              </svg>
+
+            </span>
+            <span class="sidebar-dashboard">ড্যাশবোর্ড</span>
+          </a>
+          <a href="/user/case-filing.html" style="color: #737791 "
+            class="text-sm text-white flex items-center px-4 py-4 rounded-lg  hover:bg-green-50">
+            <span class="mr-3"><svg width="25" height="28" viewBox="0 0 24 26" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M0 14H2.66667V26H0V14ZM21.3333 8.66669H24V26H21.3333V8.66669ZM10.6667 0.666687H13.3333V26H10.6667V0.666687Z"
+                  fill="#737791" />
+              </svg>
+            </span>
+            <span class="sidebar-case-filing">মামলা দায়ের</span>
+          </a>
+          <a href="/user/ongoining-case.html" style="color: #737791"
+            class="text-sm flex items-center px-4 py-4 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect width="25" height="28" fill="" />
+                <path d="M28 26.6666H4V6.66663" stroke="#737791" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M28 9.33337L17.3333 18.6667L12 13.3334L4 20" stroke="#737791" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            চলমান মামলা
+          </a>
+          <a href="/user/draft-case.html" style="color: #737791"
+            class="text-sm flex items-center px-4 py-4 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="25" height="32" viewBox="0 0 32 32" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M26.6667 2.66663H5.33341C3.86675 2.66663 2.66675 3.86663 2.66675 5.33329V29.3333L8.00008 24H26.6667C28.1334 24 29.3334 22.8 29.3334 21.3333V5.33329C29.3334 3.86663 28.1334 2.66663 26.6667 2.66663ZM26.6667 21.3333H6.93341L5.33341 22.9333V5.33329H26.6667V21.3333ZM22.6667 14.6666H20.0001V12H22.6667V14.6666ZM17.3334 14.6666H14.6667V12H17.3334V14.6666ZM12.0001 14.6666H9.33342V12H12.0001"
+                  fill="#737791" />
+              </svg>
+            </span>
+            ড্রাফট মামলা
+          </a>
+          <a href="/user/payments.html" style="color: #737791"
+            class="text-sm flex items-center px-4 py-4 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="25" height="32" viewBox="0 0 32 32" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M26.6667 2.66663H5.33341C3.86675 2.66663 2.66675 3.86663 2.66675 5.33329V29.3333L8.00008 24H26.6667C28.1334 24 29.3334 22.8 29.3334 21.3333V5.33329C29.3334 3.86663 28.1334 2.66663 26.6667 2.66663ZM26.6667 21.3333H6.93341L5.33341 22.9333V5.33329H26.6667V21.3333ZM22.6667 14.6666H20.0001V12H22.6667V14.6666ZM17.3334 14.6666H14.6667V12H17.3334V14.6666ZM12.0001 14.6666H9.33342V12H12.0001"
+                  fill="#737791" />
+              </svg>
+            </span>
+            পেমেন্টস
+          </a>
+        </nav>
+      </div>
+      <div class="mb-8 px-2 space-y-2">
+        <a href="#settings" class="flex items-center px-4 py-4 rounded-lg text-gray-500 hover:bg-green-50 text-md">
+          <span class="mr-3"><svg width="20" height="20" fill="none" stroke="currentColor">
+              <circle cx="10" cy="10" r="3" stroke-width="2" />
+              <path
+                d="M16.5 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V19a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09A1.65 1.65 0 0 0 9 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H19a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                stroke-width="2" />
+            </svg></span>
+          Settings
+        </a>
+        <a href="#" id="logout-btn"
+          class="flex items-center px-4 py-4 rounded-lg text-gray-500 hover:bg-green-50 text-md">
+          <span class="mr-3"><svg width="20" height="20" fill="none" stroke="currentColor">
+              <path d="M13 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg></span>
+          Sign Out
+        </a>
+      </div>
+    </div>
+    <!-- Main Content Area -->
+    <div style="background-color: #F9FFF8" class="flex-1 flex flex-col ">
+      <!-- Header -->
+      <div class="flex justify-end bg-white items-center px-12 pt-8 pb-4 gap-6">
+        <!-- Language Selector -->
+        <div id="lang-selector" class="flex items-center gap-2 cursor-pointer select-none relative">
+          <img id="lang-flag" src="https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/us.svg" alt="Flag"
+            class="w-6 h-6 rounded-full" />
+          <span id="lang-label" class="font-semibold text-gray-700">বাংলা</span>
+          <svg class="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <!-- Language Dropdown -->
+          <div id="lang-dropdown" class="absolute right-0 mt-10 w-32 bg-white rounded-lg shadow-lg z-50 hidden">
+            <div class="p-3 hover:bg-gray-100 flex items-center gap-2 cursor-pointer" data-lang="bn">
+              <img src="https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/us.svg" class="w-5 h-5 rounded-full" />
+              বাংলা
+            </div>
+            <div class="p-3 hover:bg-gray-100 flex items-center gap-2 cursor-pointer" data-lang="en">
+              <img src="https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/gb.svg" class="w-5 h-5 rounded-full" />
+              English
+            </div>
+          </div>
+        </div>
+        <!-- Notification Bell -->
+        <div class="relative">
+          <button id="notification-btn"
+            class="bg-yellow-50 p-2 rounded-lg flex items-center justify-center focus:outline-none">
+            <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 7.165 6 9.388 6 12v2.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+          </button>
+          <!-- Notification Dropdown -->
+          <div id="notification-dropdown"
+            class="notification-dropdown absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg z-50 hidden">
+            <div class="p-4 border-b font-semibold text-gray-700" id="notif-title">নোটিফিকেশন</div>
+            <ul class="divide-y" id="notif-list">
+            </ul>
+          </div>
+        </div>
+        <!-- Profile Section -->
+        <div class="flex items-center gap-3 cursor-pointer select-none">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile"
+            class="w-10 h-10 rounded-xl object-cover" />
+          <div class="flex flex-col">
+            <span class="font-semibold text-gray-700" id="profile-name">জহির</span>
+            <span class="text-xs text-gray-400" id="profile-role">Client</span>
+          </div>
+          <svg class="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Summary Cards + Judi Pay -->
+      <div class="flex px-12 gap-6 mb-8 mt-8">
+        <div class="flex flex-col gap-3 bg-white shadow-sm p-8 rounded-lg">
+          <div class=" pb-4 flex iems-center justify-between">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">সুপ্রভাত জন ডো,</h2>
+            <button class="px-5 py-2 bg-white border rounded-lg shadow-sm flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              ডাউনলোড করুন
+            </button>
+          </div>
+          <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 ">
+            <div class="bg-red-100 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+              <div class="mb-12 flex-1">
+                <div class="rounded-full p-3" style="background-color: #FA5A7D;">
+                  <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M2.82183 0.660919C1.48238 0.660919 0.396545 1.74678 0.396545 3.08621V20.0632C0.396545 21.4026 1.48238 22.4885 2.82183 22.4885H19.7988C21.1383 22.4885 22.2241 21.4026 22.2241 20.0632V3.08621C22.2241 1.74678 21.1383 0.660919 19.7988 0.660919H2.82183ZM6.45976 12.7874C6.45976 12.1176 5.91684 11.5747 5.24712 11.5747C4.5774 11.5747 4.03448 12.1176 4.03448 12.7874V17.6379C4.03448 18.3077 4.5774 18.8506 5.24712 18.8506C5.91684 18.8506 6.45976 18.3077 6.45976 17.6379V12.7874ZM11.3103 7.93678C11.9801 7.93678 12.523 8.47967 12.523 9.14943V17.6379C12.523 18.3077 11.9801 18.8506 11.3103 18.8506C10.6406 18.8506 10.0977 18.3077 10.0977 17.6379V9.14943C10.0977 8.47967 10.6406 7.93678 11.3103 7.93678ZM18.5862 5.51149C18.5862 4.84174 18.0433 4.29885 17.3736 4.29885C16.7038 4.29885 16.1609 4.84174 16.1609 5.51149V17.6379C16.1609 18.3077 16.7038 18.8506 17.3736 18.8506C18.0433 18.8506 18.5862 18.3077 18.5862 17.6379V5.51149Z"
+                      fill="white" />
+                  </svg>
+
+                </div>
+              </div>
+              <div class="text-2xl font-bold text-gray-800 mb-1">১০টি</div>
+              <div class="text-gray-600 mb-2">মামলা দায়ের</div>
+              <a href="#case-filing" class="text-blue-600 text-sm">আপনার মামলা দায়ের করুন</a>
+            </div>
+            <div class="bg-yellow-100 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+              <div class="mb-12 flex-1">
+                <div class="rounded-full p-3" style="background-color: #FF947A;">
+                  <svg width="23" height="23" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M28 26.6667H4V6.66666" stroke="#F1F8FD" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                    <path d="M28 9.33334L17.3333 18.6667L12 13.3333L4 20" stroke="#F1F8FD" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+
+
+                </div>
+              </div>
+              <div class="text-2xl font-bold text-gray-800 mb-1">বাকি ২ | বিবাদী ৩</div>
+              <div class="text-gray-600 mb-2">চলমান মামলা</div>
+              <a href="/user/ongoining-case.html" class="text-blue-600 text-sm">চলমান মামলার ওভারভিউ দেখুন</a>
+            </div>
+            <div class="bg-green-100 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+              <div class="mb-12 flex-1">
+                <div class="rounded-full p-3" style="background-color: #3CD856;">
+                  <svg width="23" height="23" viewBox="0 0 21 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M0.206726 5.52874C0.206726 2.84984 2.3784 0.678162 5.0573 0.678162H12.3332V5.52874C12.3332 8.20763 14.5048 10.3793 17.1837 10.3793H19.609V20.0805C19.609 22.7594 17.4373 24.931 14.7584 24.931H5.0573C2.3784 24.931 0.206726 22.7594 0.206726 20.0805V5.52874ZM5.0573 11.592C4.38758 11.592 3.84466 12.1349 3.84466 12.8046C3.84466 13.4743 4.38758 14.0172 5.0573 14.0172H7.48259C8.15231 14.0172 8.69523 13.4743 8.69523 12.8046C8.69523 12.1349 8.15231 11.592 7.48259 11.592H5.0573ZM5.0573 16.4425C4.38758 16.4425 3.84466 16.9854 3.84466 17.6552C3.84466 18.3249 4.38758 18.8678 5.0573 18.8678H9.90788C10.5776 18.8678 11.1205 18.3249 11.1205 17.6552C11.1205 16.9854 10.5776 16.4425 9.90788 16.4425H5.0573ZM15.5852 3.34451L15.4264 5.72625C15.3776 6.4583 15.985 7.06567 16.7171 7.01687L19.0988 6.85809C20.1383 6.78878 20.6123 5.52736 19.8756 4.79066L17.6526 2.5677C16.9159 1.831 15.6545 2.30496 15.5852 3.34451Z"
+                      fill="white" />
+                  </svg>
+
+
+
+                </div>
+              </div>
+              <div class="text-2xl font-bold text-gray-800 mb-1">১০টি</div>
+              <div class="text-gray-600 mb-2">ড্রাফট মামলা</div>
+              <a href="/user/draft-case.html" class="text-blue-600 text-sm">ড্রাফট মামলাগুলো দেখুন</a>
+            </div>
+            <div class="bg-indigo-100 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+              <div class="mb-12 flex-1">
+                <div class="rounded-full p-3" style="background-color: #5D5FEF;">
+                  <svg width="23" height="23" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.2535 7.96386C12.1703 7.9633 12.0903 7.99567 12.0309 8.05389C11.9715 8.11212 11.9375 8.19148 11.9364 8.27466V10.5973C11.9375 10.6806 11.9716 10.7601 12.0313 10.8184C12.0909 10.8767 12.1712 10.9089 12.2545 10.9081H19.2507C19.3341 10.9089 19.4144 10.8767 19.474 10.8184C19.5336 10.7601 19.5677 10.6806 19.5688 10.5973V8.27466C19.5677 8.1913 19.5336 8.11178 19.474 8.05352C19.4144 7.99526 19.3341 7.96302 19.2507 7.96386H12.2535ZM16.5438 0.576062C17.5119 0.622262 18.208 0.813362 18.649 1.21866C19.0848 1.61976 19.3084 2.20041 19.3525 2.96901V5.17086C19.3503 5.35838 19.2738 5.53734 19.1397 5.66846C19.0056 5.79958 18.825 5.87212 18.6375 5.87016C18.5446 5.87127 18.4523 5.85406 18.366 5.81952C18.2797 5.78498 18.2011 5.73377 18.1346 5.66884C18.0681 5.6039 18.0151 5.5265 17.9785 5.44106C17.9419 5.35561 17.9225 5.2638 17.9214 5.17086L17.9224 3.00891C17.8993 2.60991 17.8038 2.36211 17.6673 2.23611C17.535 2.11431 17.1318 2.00511 16.5091 1.97361H2.77935C2.2155 1.99461 1.84905 2.10171 1.6716 2.25396C1.5351 2.37051 1.4322 2.69181 1.43115 3.24726L1.428 15.6058C1.4805 16.1455 1.59915 16.5056 1.7514 16.6852C1.8669 16.8217 2.22495 16.9582 2.75205 17.0254H16.5238C17.1686 17.038 17.5486 16.9414 17.6767 16.8122C17.8185 16.6684 17.9214 16.2904 17.9214 15.6719V13.5247C17.9214 13.1393 18.2416 12.8254 18.6375 12.8254C19.0323 12.8254 19.3525 13.1393 19.3525 13.5247V15.6719C19.3525 16.6169 19.1593 17.3236 18.7068 17.7824C18.2406 18.2549 17.4993 18.4439 16.5091 18.4229L2.667 18.4198C1.72515 18.3106 1.05 18.0523 0.64785 17.5766C0.2835 17.1461 0.08085 16.5319 0 15.673V3.24621C0.0021 2.32641 0.2226 1.63446 0.7287 1.20186C1.1928 0.802862 1.8627 0.608612 2.75205 0.575012L16.5438 0.576062ZM19.2507 6.56526C20.2167 6.56526 21 7.33071 21 8.27466V10.5973C21 11.5412 20.2167 12.3067 19.2507 12.3067H12.2545C11.2885 12.3067 10.5052 11.5402 10.5052 10.5973V8.27466C10.5052 7.33071 11.2885 6.56526 12.2545 6.56526H19.2507ZM14.0038 8.60226C13.5208 8.60226 13.1292 8.98026 13.1292 9.44541C13.1292 9.91056 13.5208 10.2886 14.0038 10.2886C14.4868 10.2886 14.8785 9.91056 14.8785 9.44541C14.8785 8.98026 14.4868 8.60121 14.0038 8.60121" fill="white"/>
+</svg>
+
+                </div>
+              </div>
+              <div class="text-2xl font-bold text-gray-800 mb-1">জুডি পে</div>
+              <div class="text-gray-600 mb-2">সর্বশেষ নিরীক্ষণ করুন</div>
+              <a href="#payments" class="text-blue-600 text-sm">ট্রানজেকশন এবং পেমেন্ট ইতিহাস দেখুন</a>
+            </div>
+          </div>
+        </div>
+        <!-- Judi Pay Records -->
+        <div class="w-80 bg-white rounded-2xl p-6 shadow-sm ml-6 flex-shrink-0">
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="text-xl font-bold text-gray-800">জুডি পে রেকর্ডস</h3>
+          </div>
+          <div class="space-y-4">
+            <div class="flex justify-between text-gray-700 text-sm border-b pb-2">
+              <span>017949949090</span>
+              <span class="text-gray-400">err343449uu</span>
+            </div>
+            <div class="flex justify-between text-gray-700 text-sm border-b pb-2">
+              <span>017949949090</span>
+              <span class="text-gray-400">err343449uu</span>
+            </div>
+            <div class="flex justify-between text-gray-700 text-sm border-b pb-2">
+              <span>017949949090</span>
+              <span class="text-gray-400">err343449uu</span>
+            </div>
+            <div class="flex justify-between text-gray-700 text-sm">
+              <span>017949949090</span>
+              <span class="text-gray-400">err343449uu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Timeline Table -->
+      <div class="px-12 pb-8">
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="text-xl font-bold text-gray-800">পরবর্তী টাইমলাইন</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm timeline-table">
+              <thead>
+                <tr style="color: #96A5B8" class="text-[13px] text-left border-b ">
+                  <th class="py-4 ">#</th>
+                  <th class="py-4">নাম</th>
+                  <th class="py-4">তারিখ</th>
+                  <th class="py-4">সময়</th>
+                  <th class="py-4">কোর্ট</th>
+                  <th class="py-4">মামলার নাম্বার</th>
+                  <th class="py-4">অগ্রগতি</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b">
+                  <td class="py-4">01</td>
+                  <td class="py-4">আব্দুল্লাহ ইসলাম</td>
+                  <td class="py-4">রবিবার</td>
+                  <td class="py-4">সকাল ৯ টা</td>
+                  <td class="py-4">সুপ্রীমকোর্ট</td>
+                  <td class="py-4">৩৪৩৪৩৪৯৪৯৪৯</td>
+                  <td class="py-4">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 45%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b">
+                  <td class="py-4">02</td>
+                  <td class="py-4">সুমন খান</td>
+                  <td class="py-4">সোমবার</td>
+                  <td class="py-4">সকাল ৯ টা</td>
+                  <td class="py-4">সুপ্রীমকোর্ট</td>
+                  <td class="py-4">৩৪৩৪৩৪৯৪৯৪৭</td>
+                  <td class="py-4">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 29%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b">
+                  <td class="py-4">03</td>
+                  <td class="py-4">অতিথি চক্রবর্তী</td>
+                  <td class="py-4">রবিবার</td>
+                  <td class="py-4">সকাল ১১ টা</td>
+                  <td class="py-4">সুপ্রীমকোর্ট</td>
+                  <td class="py-4">৩৪৩৪৩৪৯৪৯৪৮</td>
+                  <td class="py-4">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 18%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b">
+                  <td class="py-4">04</td>
+                  <td class="py-4">জাহিদা চক্রবর্তী</td>
+                  <td class="py-4">সোমবার</td>
+                  <td class="py-4">সকাল ১০ টা</td>
+                  <td class="py-4">জেলা কোর্ট</td>
+                  <td class="py-4">২৫০০০০৫৫৫৫</td>
+                  <td class="py-4">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 25%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="border-b">
+                  <td class="py-4">05</td>
+                  <td class="py-4">অতিথি চক্রবর্তী</td>
+                  <td class="py-4">সোমবার</td>
+                  <td class="py-4">সকাল ১১ টা</td>
+                  <td class="py-4">জেলা কোর্ট</td>
+                  <td class="py-4">২৫০০০০৫৫৫৬</td>
+                  <td class="py-4">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 18%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="">
+                  <td class="py-4">06</td>
+                  <td class="py-4">জহির রায়হান</td>
+                  <td class="py-4">সোমবার</td>
+                  <td class="py-4">সকাল ১০ টা</td>
+                  <td class="py-4">জেলা কোর্ট</td>
+                  <td class="py-4">২৫০০০০৫৫৫৭</td>
+                  <td class="py-4">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 25%"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Logout functionality
+    document.getElementById('logout-btn').onclick = function(e) {
+      e.preventDefault();
+      localStorage.clear();
+      window.location.href = '/login.html';
+    };
+    // Language data
+    const langData = {
+      bn: {
+        lang: 'বাংলা',
+        flag: 'https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/us.svg',
+        notifTitle: 'নোটিফিকেশন',
+        notifications: [
+          'আপনার মামলার শুনানি আগামীকাল সকাল ৯টায়।',
+          'নতুন ডকুমেন্ট আপলোড হয়েছে।',
+          'পেমেন্ট সফলভাবে সম্পন্ন হয়েছে।',
+          'আপনার কেস আপডেট হয়েছে।',
+          'জুডি পে-তে নতুন লেনদেন হয়েছে।'
+        ],
+        profileRole: 'ক্লায়েন্ট',
+        profileName: 'জহির',
+        projectTitle: 'DIU LAW PROJECT',
+        sidebar: {
+          dashboard: 'ড্যাশবোর্ড',
+          caseFiling: 'মামলা দায়ের',
+          ongoingCases: 'চলমান মামলা',
+          draftCases: 'ড্রাফট মামলা',
+          payments: 'পেমেন্টস',
+          settings: 'সেটিংস',
+          signOut: 'সাইন আউট'
+        },
+        greeting: 'সুপ্রভাত জন ডো,',
+        download: 'ডাউনলোড করুন',
+        cards: {
+          filed: 'মামলা দায়ের',
+          filedCount: '১০টি',
+          filedAction: 'আপনার মামলা দায়ের করুন',
+          ongoing: 'চলমান মামলা',
+          ongoingCount: 'বাকি ২ | বিবাদী ৩',
+          ongoingAction: 'চলমান মামলার ওভারভিউ দেখুন',
+          draft: 'ড্রাফট মামলা',
+          draftCount: '১০টি',
+          draftAction: 'ড্রাফট মামলাগুলো দেখুন',
+          judiPay: 'জুডি পে',
+          judiPayAction: 'ট্রানজেকশন এবং পেমেন্ট ইতিহাস দেখুন',
+          judiPayDesc: 'সর্বশেষ নিরীক্ষণ করুন',
+          judiPayRecords: 'জুডি পে রেকর্ডস'
+        },
+        timeline: {
+          title: 'পরবর্তী টাইমলাইন',
+          table: ['#', 'নাম', 'তারিখ', 'সময়', 'কোর্ট', 'মামলার নাম্বার', 'অগ্রগতি'],
+          rows: [
+            ['01', 'আব্দুল্লাহ ইসলাম', 'রবিবার', 'সকাল ৯ টা', 'সুপ্রীমকোর্ট', '৩৪৩৪৩৪৯৪৯৪৯', 45],
+            ['02', 'সুমন খান', 'সোমবার', 'সকাল ৯ টা', 'সুপ্রীমকোর্ট', '৩৪৩৪৩৪৯৪৯৪৭', 29],
+            ['03', 'অতিথি চক্রবর্তী', 'রবিবার', 'সকাল ১১ টা', 'সুপ্রীমকোর্ট', '৩৪৩৪৩৪৯৪৯৪৮', 18],
+            ['04', 'জাহিদা চক্রবর্তী', 'সোমবার', 'সকাল ১০ টা', 'জেলা কোর্ট', '২৫০০০০৫৫৫৫', 25],
+            ['05', 'অতিথি চক্রবর্তী', 'সোমবার', 'সকাল ১১ টা', 'জেলা কোর্ট', '২৫০০০০৫৫৫৬', 18],
+            ['06', 'জহির রায়হান', 'সোমবার', 'সকাল ১০ টা', 'জেলা কোর্ট', '২৫০০০০৫৫৫৭', 25]
+          ]
+        }
+      },
+      en: {
+        lang: 'English',
+        flag: 'https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/gb.svg',
+        notifTitle: 'Notifications',
+        notifications: [
+          'Your case hearing is tomorrow at 9am.',
+          'A new document has been uploaded.',
+          'Payment completed successfully.',
+          'Your case has been updated.',
+          'New transaction in Judi Pay.'
+        ],
+        profileRole: 'Client',
+        profileName: 'Zahir',
+        projectTitle: 'DIU LAW PROJECT',
+        sidebar: {
+          dashboard: 'Dashboard',
+          caseFiling: 'Case Filing',
+          ongoingCases: 'Ongoing Cases',
+          draftCases: 'Draft Cases',
+          payments: 'Payments',
+          settings: 'Settings',
+          signOut: 'Sign Out'
+        },
+        greeting: 'Good morning John Doe,',
+        download: 'Download',
+        cards: {
+          filed: 'Filed Cases',
+          filedCount: '10',
+          filedAction: 'File your case',
+          ongoing: 'Ongoing Cases',
+          ongoingCount: 'Pending 2 | Defendant 3',
+          ongoingAction: 'View ongoing case overview',
+          draft: 'Draft Cases',
+          draftCount: '10',
+          draftAction: 'View draft cases',
+          judiPay: 'Judi Pay',
+          judiPayAction: 'View transactions and payment history',
+          judiPayDesc: 'Check latest audit',
+          judiPayRecords: 'Judi Pay Records'
+        },
+        timeline: {
+          title: 'Upcoming Timeline',
+          table: ['#', 'Name', 'Date', 'Time', 'Court', 'Case Number', 'Progress'],
+          rows: [
+            ['01', 'Abdullah Islam', 'Sunday', '9:00 AM', 'Supreme Court', '34343494949', 45],
+            ['02', 'Sumon Khan', 'Monday', '9:00 AM', 'Supreme Court', '34343494947', 29],
+            ['03', 'Atithi Chakraborty', 'Sunday', '11:00 AM', 'Supreme Court', '34343494948', 18],
+            ['04', 'Jahida Chakraborty', 'Monday', '10:00 AM', 'District Court', '2500005555', 25],
+            ['05', 'Atithi Chakraborty', 'Monday', '11:00 AM', 'District Court', '2500005556', 18],
+            ['06', 'Zahir Rayhan', 'Monday', '10:00 AM', 'District Court', '2500005557', 25]
+          ]
+        }
+      }
+    };
+    let currentLang = 'bn';
+
+    // Language dropdown toggle
+    const langSelector = document.getElementById('lang-selector');
+    const langDropdown = document.getElementById('lang-dropdown');
+    langSelector.addEventListener('click', function (e) {
+      e.stopPropagation();
+      langDropdown.classList.toggle('hidden');
+    });
+    document.addEventListener('click', function (e) {
+      if (!langDropdown.contains(e.target) && !langSelector.contains(e.target)) {
+        langDropdown.classList.add('hidden');
+      }
+    });
+    // Language change
+    langDropdown.querySelectorAll('[data-lang]').forEach(item => {
+      item.addEventListener('click', function (e) {
+        const lang = this.getAttribute('data-lang');
+        setLanguage(lang);
+        langDropdown.classList.add('hidden');
+      });
+    });
+    function setLanguage(lang) {
+      currentLang = lang;
+      langData[lang].timeline.table.forEach((txt, i) => ths[i].textContent = txt);
+      const tbody = document.querySelector('.timeline-table tbody');
+      tbody.innerHTML = '';
+      langData[lang].timeline.rows.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach((cell, idx) => {
+          if (idx < 6) {
+            const td = document.createElement('td');
+            td.className = 'py-2';
+            td.textContent = cell;
+            tr.appendChild(td);
+          }
+        });
+        const td = document.createElement('td');
+        td.className = 'py-2';
+        td.innerHTML = `<div class="progress-bar w-24"><div class="progress-bar-fill" style="width: ${row[6]}%"></div></div>`;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      });
+      renderNotifications();
+    }
+    // Notification dropdown toggle
+    document.getElementById('notification-btn').addEventListener('click', function (e) {
+      e.stopPropagation();
+      const dropdown = document.getElementById('notification-dropdown');
+      dropdown.classList.toggle('show');
+      renderNotifications();
+    });
+    // Hide notification dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+      const btn = document.getElementById('notification-btn');
+      const dropdown = document.getElementById('notification-dropdown');
+      if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+    // Render notifications
+    function renderNotifications() {
+      const notifList = document.getElementById('notif-list');
+      notifList.innerHTML = '';
+      langData[currentLang].notifications.forEach(msg => {
+        const li = document.createElement('li');
+        li.className = 'p-4 text-gray-600';
+        li.textContent = msg;
+        notifList.appendChild(li);
+      });
+    }
+    // Initial render
+    setLanguage(currentLang);
+  </script>
+</body>
+
+</html>

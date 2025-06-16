@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ড্রাফট মামলা | Draft Case</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .sidebar-link.active {
+            background-color: #059669;
+            color: white;
+        }
+
+        .custom-select {
+            position: relative;
+        }
+
+        .custom-select select {
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+            background: white !important;
+        }
+
+        .custom-select select::-ms-expand {
+            display: none !important;
+        }
+
+        .custom-select select option {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body style="background-color: #F6FDE8;" class=" min-h-screen">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="flex flex-col w-84 bg-white min-h-screen justify-between">
+            <div class="flex flex-col gap-4">
+                <div class="px-8 pt-8 pb-6">
+                    <span class="text-2xl font-bold text-gray-900 tracking-tight">DIU LAW PROJECT</span>
+                </div>
+                <nav class="space-y-2 px-4">
+                    <a href="/user/dashboard.html" style=" color: #737791"
+                        class="text-sm flex items-center px-4 py-4 rounded-xl ">
+                        <span class="mr-3">
+                            <svg width="25" height="32" viewBox="0 0 32 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_8121_67" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0"
+                                    y="0" width="32" height="32">
+                                    <rect width="32" height="32" fill="white" />
+                                </mask>
+                                <g mask="url(#mask0_8121_67)">
+                                    <path
+                                        d="M13.6704 7.84579L14.0416 13.3657L14.2258 16.1401C14.2278 16.4255 14.2725 16.7089 14.3588 16.9813C14.5813 17.5101 15.1168 17.8461 15.6993 17.8227L24.5756 17.242C24.96 17.2357 25.3312 17.3795 25.6074 17.6417C25.8377 17.8603 25.9864 18.1461 26.0333 18.4536L26.049 18.6403C25.6817 23.7265 21.9461 27.9689 16.8704 29.064C11.7946 30.1591 6.58965 27.8457 4.08145 23.3799C3.35836 22.0824 2.90671 20.6564 2.75301 19.1853C2.68881 18.7499 2.66055 18.31 2.66848 17.87C2.66055 12.417 6.5438 7.70262 11.9796 6.5661C12.6339 6.46422 13.2752 6.81057 13.5376 7.40738C13.6054 7.54559 13.6502 7.69362 13.6704 7.84579Z"
+                                        fill="#737791" />
+                                    <path opacity="0.4"
+                                        d="M29.3335 13.083L29.3242 13.1264L29.2973 13.1896L29.301 13.3631C29.2871 13.5929 29.1983 13.8139 29.0455 13.9926C28.8862 14.1786 28.6686 14.3053 28.429 14.3545L28.2829 14.3745L18.0418 15.0381C17.7011 15.0717 17.3619 14.9618 17.1087 14.7359C16.8975 14.5475 16.7626 14.2934 16.7245 14.0195L16.0371 3.79334C16.0251 3.75877 16.0251 3.72129 16.0371 3.6867C16.0465 3.40482 16.1706 3.13838 16.3817 2.9469C16.5926 2.75542 16.8731 2.65486 17.1602 2.66769C23.2401 2.82237 28.3499 7.19431 29.3335 13.083Z"
+                                        fill="#00AF58" />
+                                </g>
+                            </svg>
+
+                        </span>
+                        <span class="sidebar-dashboard">ড্যাশবোর্ড</span>
+                    </a>
+                    <a href="/user/case-filing.html" style="color: #737791 "
+                        class="text-sm text-white flex items-center px-4 py-4 rounded-lg  hover:bg-green-50">
+                        <span class="mr-3"><svg width="25" height="28" viewBox="0 0 24 26" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M0 14H2.66667V26H0V14ZM21.3333 8.66669H24V26H21.3333V8.66669ZM10.6667 0.666687H13.3333V26H10.6667V0.666687Z"
+                                    fill="#737791" />
+                            </svg>
+                        </span>
+                        <span class="sidebar-case-filing">মামলা দায়ের</span>
+                    </a>
+                    <a href="/user/ongoining-case.html" style="color: #737791"
+                        class="text-sm flex items-center px-4 py-4 rounded-lg hover:bg-green-50">
+                        <span class="mr-3"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="25" height="28" fill="" />
+                                <path d="M28 26.6666H4V6.66663" stroke="#737791" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M28 9.33337L17.3333 18.6667L12 13.3334L4 20" stroke="#737791" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        চলমান মামলা
+                    </a>
+                    <a href="/user/draft-case.html" style=" background-color: #00AF58"
+                        class="text-sm flex items-center px-4 py-4 rounded-lg hover:bg-green-50 text-white">
+                        <span class="mr-3"><svg width="25" height="32" viewBox="0 0 32 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M26.6667 2.66663H5.33341C3.86675 2.66663 2.66675 3.86663 2.66675 5.33329V29.3333L8.00008 24H26.6667C28.1334 24 29.3334 22.8 29.3334 21.3333V5.33329C29.3334 3.86663 28.1334 2.66663 26.6667 2.66663ZM26.6667 21.3333H6.93341L5.33341 22.9333V5.33329H26.6667V21.3333ZM22.6667 14.6666H20.0001V12H22.6667V14.6666ZM17.3334 14.6666H14.6667V12H17.3334V14.6666ZM12.0001 14.6666H9.33342V12H12.0001"
+                                    fill="#ffffff" />
+                            </svg>
+                        </span>
+                        ড্রাফট মামলা
+                    </a>
+                    <a href="#" style="color: #737791"
+                        class="text-sm flex items-center px-4 py-4 rounded-lg text-gray-700 hover:bg-green-50">
+                        <span class="mr-3"><svg width="25" height="32" viewBox="0 0 32 32" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M26.6667 2.66663H5.33341C3.86675 2.66663 2.66675 3.86663 2.66675 5.33329V29.3333L8.00008 24H26.6667C28.1334 24 29.3334 22.8 29.3334 21.3333V5.33329C29.3334 3.86663 28.1334 2.66663 26.6667 2.66663ZM26.6667 21.3333H6.93341L5.33341 22.9333V5.33329H26.6667V21.3333ZM22.6667 14.6666H20.0001V12H22.6667V14.6666ZM17.3334 14.6666H14.6667V12H17.3334V14.6666ZM12.0001 14.6666H9.33342V12H12.0001"
+                                    fill="#737791" />
+                            </svg>
+                        </span>
+                        পেমেন্টস
+                    </a>
+                </nav>
+            </div>
+            <div class="mb-8 px-2 space-y-2">
+                <a href="#settings"
+                    class="flex items-center px-4 py-4 rounded-lg text-gray-500 hover:bg-green-50 text-md">
+                    <span class="mr-3"><svg width="20" height="20" fill="none" stroke="currentColor">
+                            <circle cx="10" cy="10" r="3" stroke-width="2" />
+                            <path
+                                d="M16.5 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V19a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09A1.65 1.65 0 0 0 9 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H19a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                                stroke-width="2" />
+                        </svg></span>
+                    Settings
+                </a>
+                <a href="#" id="logout-btn" class="flex items-center px-4 py-4 rounded-lg text-gray-500 hover:bg-green-50 text-md">
+                    <span class="mr-3"><svg width="20" height="20" fill="none" stroke="currentColor">
+                            <path
+                                d="M13 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></span>
+                    Sign Out
+                </a>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col"
+            style="background-color: #F9FFF8; background: url(/assets/bg.png);background-position: top;background-size: cover;">
+            <!-- Header (unchanged) -->
+            <div class="flex justify-end bg-white items-center px-12 pt-8 pb-4 gap-6">
+                <!-- Language Selector -->
+                <div id="lang-selector" class="flex items-center gap-2 cursor-pointer select-none relative">
+                    <img id="lang-flag" src="https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/us.svg" alt="Flag"
+                        class="w-6 h-6 rounded-full" />
+                    <span id="lang-label" class="font-semibold text-gray-700">বাংলা</span>
+                    <svg class="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <!-- Language Dropdown -->
+                    <div id="lang-dropdown"
+                        class="absolute right-0 mt-10 w-32 bg-white rounded-lg shadow-lg z-50 hidden">
+                        <div class="p-3 hover:bg-gray-100 flex items-center gap-2 cursor-pointer" data-lang="bn">
+                            <img src="https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/us.svg"
+                                class="w-5 h-5 rounded-full" /> বাংলা
+                        </div>
+                        <div class="p-3 hover:bg-gray-100 flex items-center gap-2 cursor-pointer" data-lang="en">
+                            <img src="https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/gb.svg"
+                                class="w-5 h-5 rounded-full" /> English
+                        </div>
+                    </div>
+                </div>
+                <!-- Notification Bell -->
+                <div class="relative">
+                    <button id="notification-btn"
+                        class="bg-yellow-50 p-2 rounded-lg flex items-center justify-center focus:outline-none">
+                        <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 7.165 6 9.388 6 12v2.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span
+                            class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                    <!-- Notification Dropdown -->
+                    <div id="notification-dropdown"
+                        class="notification-dropdown absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-lg z-50 hidden">
+                        <div class="p-4 border-b font-semibold text-gray-700" id="notif-title">নোটিফিকেশন</div>
+                        <ul class="divide-y" id="notif-list"></ul>
+                    </div>
+                </div>
+                <!-- Profile Section -->
+                <div class="flex items-center gap-3 cursor-pointer select-none">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile"
+                        class="w-10 h-10 rounded-xl object-cover" />
+                    <div class="flex flex-col">
+                        <span class="font-semibold text-gray-700" id="profile-name">জহির</span>
+                        <span class="text-xs text-gray-400" id="profile-role">Client</span>
+                    </div>
+                    <svg class="w-4 h-4 text-gray-400 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            </div>
+            <!-- Main Running Cases List -->
+            <div class="flex-1 flex flex-col items-center justify-start py-8 px-4 md:px-16"
+                style="background-color: #F3FFE7; background-image: url(/assets/bg.png);background-position: top;background-size: cover;">
+                <h2 class="text-3xl font-bold text-green-700 mb-8 text-center">ড্রাফট মামলা</h2>
+                <div class="w-full  rounded-2xl p-">
+                    <div class="flex flex-col gap-4 rounded-lg" style="background-color: #D0D0D047;">
+                        <!-- Case Card Example, repeat for each case -->
+                        <div class="flex items-center justify-between  rounded-xl px-6 py-4 mb-2">
+                            <div class="flex items-center gap-4">
+                                <svg width="35" height="43" viewBox="0 0 43 43" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21.65 21.65C19.7387 21.65 18.1026 20.9695 16.7416 19.6084C15.3805 18.2474 14.7 16.6112 14.7 14.7C14.7 12.7887 15.3805 11.1526 16.7416 9.79156C18.1026 8.43052 19.7387 7.75 21.65 7.75C23.5612 7.75 25.1974 8.43052 26.5584 9.79156C27.9195 11.1526 28.6 12.7887 28.6 14.7C28.6 16.6112 27.9195 18.2474 26.5584 19.6084C25.1974 20.9695 23.5612 21.65 21.65 21.65ZM7.75 35.55V30.685C7.75 29.7004 8.00339 28.7955 8.51016 27.9702C9.01693 27.1448 9.69021 26.515 10.53 26.0806C12.3254 25.1829 14.1498 24.5096 16.0031 24.0608C17.8565 23.6119 19.7387 23.3875 21.65 23.3875C23.5612 23.3875 25.4435 23.6119 27.2969 24.0608C29.1502 24.5096 30.9746 25.1829 32.77 26.0806C33.6098 26.515 34.2831 27.1448 34.7898 27.9702C35.2966 28.7955 35.55 29.7004 35.55 30.685V35.55H7.75ZM11.225 32.075H32.075V30.685C32.075 30.3665 31.9954 30.0769 31.8361 29.8162C31.6768 29.5556 31.4669 29.3529 31.2062 29.2081C29.6425 28.4263 28.0643 27.8398 26.4716 27.4489C24.8789 27.058 23.2717 26.8625 21.65 26.8625C20.0283 26.8625 18.4211 27.058 16.8284 27.4489C15.2357 27.8398 13.6575 28.4263 12.0937 29.2081C11.8331 29.3529 11.6232 29.5556 11.4639 29.8162C11.3046 30.0769 11.225 30.3665 11.225 30.685V32.075ZM21.65 18.175C22.6056 18.175 23.4237 17.8347 24.1042 17.1542C24.7847 16.4737 25.125 15.6556 25.125 14.7C25.125 13.7444 24.7847 12.9263 24.1042 12.2458C23.4237 11.5653 22.6056 11.225 21.65 11.225C20.6944 11.225 19.8763 11.5653 19.1958 12.2458C18.5153 12.9263 18.175 13.7444 18.175 14.7C18.175 15.6556 18.5153 16.4737 19.1958 17.1542C19.8763 17.8347 20.6944 18.175 21.65 18.175Z"
+                                        fill="#49454F" />
+                                </svg>
+
+                                <div>
+                                    <div class="text-sm text-gray-500">মামলা নং ২০০৪/২০০০২৮৮</div>
+                                    <div class="text-lg font-semibold text-gray-800">তাসফীদ বিন ওয়াহিদ</div>
+                                </div>
+                            </div>
+                            <span class="text-2xl text-gray-400">&rsaquo;</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-[#F3FFE7] rounded-xl px-6 py-4 mb-2">
+                            <div class="flex items-center gap-4">
+                                <svg width="35" height="43" viewBox="0 0 43 43" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21.65 21.65C19.7387 21.65 18.1026 20.9695 16.7416 19.6084C15.3805 18.2474 14.7 16.6112 14.7 14.7C14.7 12.7887 15.3805 11.1526 16.7416 9.79156C18.1026 8.43052 19.7387 7.75 21.65 7.75C23.5612 7.75 25.1974 8.43052 26.5584 9.79156C27.9195 11.1526 28.6 12.7887 28.6 14.7C28.6 16.6112 27.9195 18.2474 26.5584 19.6084C25.1974 20.9695 23.5612 21.65 21.65 21.65ZM7.75 35.55V30.685C7.75 29.7004 8.00339 28.7955 8.51016 27.9702C9.01693 27.1448 9.69021 26.515 10.53 26.0806C12.3254 25.1829 14.1498 24.5096 16.0031 24.0608C17.8565 23.6119 19.7387 23.3875 21.65 23.3875C23.5612 23.3875 25.4435 23.6119 27.2969 24.0608C29.1502 24.5096 30.9746 25.1829 32.77 26.0806C33.6098 26.515 34.2831 27.1448 34.7898 27.9702C35.2966 28.7955 35.55 29.7004 35.55 30.685V35.55H7.75ZM11.225 32.075H32.075V30.685C32.075 30.3665 31.9954 30.0769 31.8361 29.8162C31.6768 29.5556 31.4669 29.3529 31.2062 29.2081C29.6425 28.4263 28.0643 27.8398 26.4716 27.4489C24.8789 27.058 23.2717 26.8625 21.65 26.8625C20.0283 26.8625 18.4211 27.058 16.8284 27.4489C15.2357 27.8398 13.6575 28.4263 12.0937 29.2081C11.8331 29.3529 11.6232 29.5556 11.4639 29.8162C11.3046 30.0769 11.225 30.3665 11.225 30.685V32.075ZM21.65 18.175C22.6056 18.175 23.4237 17.8347 24.1042 17.1542C24.7847 16.4737 25.125 15.6556 25.125 14.7C25.125 13.7444 24.7847 12.9263 24.1042 12.2458C23.4237 11.5653 22.6056 11.225 21.65 11.225C20.6944 11.225 19.8763 11.5653 19.1958 12.2458C18.5153 12.9263 18.175 13.7444 18.175 14.7C18.175 15.6556 18.5153 16.4737 19.1958 17.1542C19.8763 17.8347 20.6944 18.175 21.65 18.175Z"
+                                        fill="#49454F" />
+                                </svg>
+
+                                <div>
+                                    <div class="text-sm text-gray-500">মামলা নং ২০০৪/২০০০২৮৮</div>
+                                    <div class="text-lg font-semibold text-gray-800">তাসফীদ বিন ওয়াহিদ</div>
+                                </div>
+                            </div>
+                            <span class="text-2xl text-gray-400">&rsaquo;</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-[#F3FFE7] rounded-xl px-6 py-4 mb-2">
+                            <div class="flex items-center gap-4">
+                                <svg width="35" height="43" viewBox="0 0 43 43" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21.65 21.65C19.7387 21.65 18.1026 20.9695 16.7416 19.6084C15.3805 18.2474 14.7 16.6112 14.7 14.7C14.7 12.7887 15.3805 11.1526 16.7416 9.79156C18.1026 8.43052 19.7387 7.75 21.65 7.75C23.5612 7.75 25.1974 8.43052 26.5584 9.79156C27.9195 11.1526 28.6 12.7887 28.6 14.7C28.6 16.6112 27.9195 18.2474 26.5584 19.6084C25.1974 20.9695 23.5612 21.65 21.65 21.65ZM7.75 35.55V30.685C7.75 29.7004 8.00339 28.7955 8.51016 27.9702C9.01693 27.1448 9.69021 26.515 10.53 26.0806C12.3254 25.1829 14.1498 24.5096 16.0031 24.0608C17.8565 23.6119 19.7387 23.3875 21.65 23.3875C23.5612 23.3875 25.4435 23.6119 27.2969 24.0608C29.1502 24.5096 30.9746 25.1829 32.77 26.0806C33.6098 26.515 34.2831 27.1448 34.7898 27.9702C35.2966 28.7955 35.55 29.7004 35.55 30.685V35.55H7.75ZM11.225 32.075H32.075V30.685C32.075 30.3665 31.9954 30.0769 31.8361 29.8162C31.6768 29.5556 31.4669 29.3529 31.2062 29.2081C29.6425 28.4263 28.0643 27.8398 26.4716 27.4489C24.8789 27.058 23.2717 26.8625 21.65 26.8625C20.0283 26.8625 18.4211 27.058 16.8284 27.4489C15.2357 27.8398 13.6575 28.4263 12.0937 29.2081C11.8331 29.3529 11.6232 29.5556 11.4639 29.8162C11.3046 30.0769 11.225 30.3665 11.225 30.685V32.075ZM21.65 18.175C22.6056 18.175 23.4237 17.8347 24.1042 17.1542C24.7847 16.4737 25.125 15.6556 25.125 14.7C25.125 13.7444 24.7847 12.9263 24.1042 12.2458C23.4237 11.5653 22.6056 11.225 21.65 11.225C20.6944 11.225 19.8763 11.5653 19.1958 12.2458C18.5153 12.9263 18.175 13.7444 18.175 14.7C18.175 15.6556 18.5153 16.4737 19.1958 17.1542C19.8763 17.8347 20.6944 18.175 21.65 18.175Z"
+                                        fill="#49454F" />
+                                </svg>
+
+                                <div>
+                                    <div class="text-sm text-gray-500">মামলা নং ২০০৪/২০০০২৮৮</div>
+                                    <div class="text-lg font-semibold text-gray-800">তাসফীদ বিন ওয়াহিদ</div>
+                                </div>
+                            </div>
+                            <span class="text-2xl text-gray-400">&rsaquo;</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-[#F3FFE7] rounded-xl px-6 py-4 mb-2">
+                            <div class="flex items-center gap-4">
+                                <svg width="35" height="43" viewBox="0 0 43 43" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21.65 21.65C19.7387 21.65 18.1026 20.9695 16.7416 19.6084C15.3805 18.2474 14.7 16.6112 14.7 14.7C14.7 12.7887 15.3805 11.1526 16.7416 9.79156C18.1026 8.43052 19.7387 7.75 21.65 7.75C23.5612 7.75 25.1974 8.43052 26.5584 9.79156C27.9195 11.1526 28.6 12.7887 28.6 14.7C28.6 16.6112 27.9195 18.2474 26.5584 19.6084C25.1974 20.9695 23.5612 21.65 21.65 21.65ZM7.75 35.55V30.685C7.75 29.7004 8.00339 28.7955 8.51016 27.9702C9.01693 27.1448 9.69021 26.515 10.53 26.0806C12.3254 25.1829 14.1498 24.5096 16.0031 24.0608C17.8565 23.6119 19.7387 23.3875 21.65 23.3875C23.5612 23.3875 25.4435 23.6119 27.2969 24.0608C29.1502 24.5096 30.9746 25.1829 32.77 26.0806C33.6098 26.515 34.2831 27.1448 34.7898 27.9702C35.2966 28.7955 35.55 29.7004 35.55 30.685V35.55H7.75ZM11.225 32.075H32.075V30.685C32.075 30.3665 31.9954 30.0769 31.8361 29.8162C31.6768 29.5556 31.4669 29.3529 31.2062 29.2081C29.6425 28.4263 28.0643 27.8398 26.4716 27.4489C24.8789 27.058 23.2717 26.8625 21.65 26.8625C20.0283 26.8625 18.4211 27.058 16.8284 27.4489C15.2357 27.8398 13.6575 28.4263 12.0937 29.2081C11.8331 29.3529 11.6232 29.5556 11.4639 29.8162C11.3046 30.0769 11.225 30.3665 11.225 30.685V32.075ZM21.65 18.175C22.6056 18.175 23.4237 17.8347 24.1042 17.1542C24.7847 16.4737 25.125 15.6556 25.125 14.7C25.125 13.7444 24.7847 12.9263 24.1042 12.2458C23.4237 11.5653 22.6056 11.225 21.65 11.225C20.6944 11.225 19.8763 11.5653 19.1958 12.2458C18.5153 12.9263 18.175 13.7444 18.175 14.7C18.175 15.6556 18.5153 16.4737 19.1958 17.1542C19.8763 17.8347 20.6944 18.175 21.65 18.175Z"
+                                        fill="#49454F" />
+                                </svg>
+
+                                <div>
+                                    <div class="text-sm text-gray-500">মামলা নং ২০০৪/২০০০২৮৮</div>
+                                    <div class="text-lg font-semibold text-gray-800">তাসফীদ বিন ওয়াহিদ</div>
+                                </div>
+                            </div>
+                            <span class="text-2xl text-gray-400">&rsaquo;</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-[#F3FFE7] rounded-xl px-6 py-4 mb-2">
+                            <div class="flex items-center gap-4">
+                                <svg width="35" height="43" viewBox="0 0 43 43" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M21.65 21.65C19.7387 21.65 18.1026 20.9695 16.7416 19.6084C15.3805 18.2474 14.7 16.6112 14.7 14.7C14.7 12.7887 15.3805 11.1526 16.7416 9.79156C18.1026 8.43052 19.7387 7.75 21.65 7.75C23.5612 7.75 25.1974 8.43052 26.5584 9.79156C27.9195 11.1526 28.6 12.7887 28.6 14.7C28.6 16.6112 27.9195 18.2474 26.5584 19.6084C25.1974 20.9695 23.5612 21.65 21.65 21.65ZM7.75 35.55V30.685C7.75 29.7004 8.00339 28.7955 8.51016 27.9702C9.01693 27.1448 9.69021 26.515 10.53 26.0806C12.3254 25.1829 14.1498 24.5096 16.0031 24.0608C17.8565 23.6119 19.7387 23.3875 21.65 23.3875C23.5612 23.3875 25.4435 23.6119 27.2969 24.0608C29.1502 24.5096 30.9746 25.1829 32.77 26.0806C33.6098 26.515 34.2831 27.1448 34.7898 27.9702C35.2966 28.7955 35.55 29.7004 35.55 30.685V35.55H7.75ZM11.225 32.075H32.075V30.685C32.075 30.3665 31.9954 30.0769 31.8361 29.8162C31.6768 29.5556 31.4669 29.3529 31.2062 29.2081C29.6425 28.4263 28.0643 27.8398 26.4716 27.4489C24.8789 27.058 23.2717 26.8625 21.65 26.8625C20.0283 26.8625 18.4211 27.058 16.8284 27.4489C15.2357 27.8398 13.6575 28.4263 12.0937 29.2081C11.8331 29.3529 11.6232 29.5556 11.4639 29.8162C11.3046 30.0769 11.225 30.3665 11.225 30.685V32.075ZM21.65 18.175C22.6056 18.175 23.4237 17.8347 24.1042 17.1542C24.7847 16.4737 25.125 15.6556 25.125 14.7C25.125 13.7444 24.7847 12.9263 24.1042 12.2458C23.4237 11.5653 22.6056 11.225 21.65 11.225C20.6944 11.225 19.8763 11.5653 19.1958 12.2458C18.5153 12.9263 18.175 13.7444 18.175 14.7C18.175 15.6556 18.5153 16.4737 19.1958 17.1542C19.8763 17.8347 20.6944 18.175 21.65 18.175Z"
+                                        fill="#49454F" />
+                                </svg>
+
+                                <div>
+                                    <div class="text-sm text-gray-500">মামলা নং ২০০৪/২০০০২৮৮</div>
+                                    <div class="text-lg font-semibold text-gray-800">তাসফীদ বিন ওয়াহিদ</div>
+                                </div>
+                            </div>
+                            <span class="text-2xl text-gray-400">&rsaquo;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Logout functionality
+        document.getElementById('logout-btn').onclick = function(e) {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        };
+        // Language data
+        const langData = {
+            bn: {
+                lang: 'বাংলা',
+                flag: 'https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/us.svg',
+                notifTitle: 'নোটিফিকেশন',
+                notifications: [
+                    'আপনার মামলার শুনানি আগামীকাল সকাল ৯টায়।',
+                    'নতুন ডকুমেন্ট আপলোড হয়েছে।',
+                    'পেমেন্ট সফলভাবে সম্পন্ন হয়েছে।',
+                    'আপনার কেস আপডেট হয়েছে।',
+                    'জুডি পে-তে নতুন লেনদেন হয়েছে।'
+                ],
+                profileRole: 'ক্লায়েন্ট',
+                profileName: 'জহির',
+                projectTitle: 'DIU LAW PROJECT',
+                sidebar: {
+                    dashboard: 'ড্যাশবোর্ড',
+                    caseFiling: 'মামলা দায়ের',
+                    ongoingCases: 'চলমান মামলা',
+                    draftCases: 'ড্রাফট মামলা',
+                    payments: 'পেমেন্টস',
+                    settings: 'সেটিংস',
+                    signOut: 'সাইন আউট'
+                },
+                greeting: 'সুপ্রভাত জন ডো,',
+                download: 'ডাউনলোড করুন',
+                cards: {
+                    filed: 'মামলা দায়ের',
+                    filedCount: '১০টি',
+                    filedAction: 'আপনার মামলা দায়ের করুন',
+                    ongoing: 'চলমান মামলা',
+                    ongoingCount: 'বাকি ২ | বিবাদী ৩',
+                    ongoingAction: 'চলমান মামলার ওভারভিউ দেখুন',
+                    draft: 'ড্রাফট মামলা',
+                    draftCount: '১০টি',
+                    draftAction: 'ড্রাফট মামলাগুলো দেখুন',
+                    judiPay: 'জুডি পে',
+                    judiPayAction: 'ট্রানজেকশন এবং পেমেন্ট ইতিহাস দেখুন',
+                    judiPayDesc: 'সর্বশেষ নিরীক্ষণ করুন',
+                    judiPayRecords: 'জুডি পে রেকর্ডস'
+                },
+                timeline: {
+                    title: 'পরবর্তী টাইমলাইন',
+                    table: ['#', 'নাম', 'তারিখ', 'সময়', 'কোর্ট', 'মামলার নাম্বার', 'অগ্রগতি'],
+                    rows: [
+                        ['01', 'আব্দুল্লাহ ইসলাম', 'রবিবার', 'সকাল ৯ টা', 'সুপ্রীমকোর্ট', '৩৪৩৪৩৪৯৪৯৪৯', 45],
+                        ['02', 'সুমন খান', 'সোমবার', 'সকাল ৯ টা', 'সুপ্রীমকোর্ট', '৩৪৩৪৩৪৯৪৯৪৭', 29],
+                        ['03', 'অতিথি চক্রবর্তী', 'রবিবার', 'সকাল ১১ টা', 'সুপ্রীমকোর্ট', '৩৪৩৪৩৪৯৪৯৪৮', 18],
+                        ['04', 'জাহিদা চক্রবর্তী', 'সোমবার', 'সকাল ১০ টা', 'জেলা কোর্ট', '২৫০০০০৫৫৫৫', 25],
+                        ['05', 'অতিথি চক্রবর্তী', 'সোমবার', 'সকাল ১১ টা', 'জেলা কোর্ট', '২৫০০০০৫৫৫৬', 18],
+                        ['06', 'জহির রায়হান', 'সোমবার', 'সকাল ১০ টা', 'জেলা কোর্ট', '২৫০০০০৫৫৫৭', 25]
+                    ]
+                }
+            },
+            en: {
+                lang: 'English',
+                flag: 'https://cdn.jsdelivr.net/gh/hjnilsson/country-flags/svg/gb.svg',
+                notifTitle: 'Notifications',
+                notifications: [
+                    'Your case hearing is tomorrow at 9am.',
+                    'A new document has been uploaded.',
+                    'Payment completed successfully.',
+                    'Your case has been updated.',
+                    'New transaction in Judi Pay.'
+                ],
+                profileRole: 'Client',
+                profileName: 'Zahir',
+                projectTitle: 'DIU LAW PROJECT',
+                sidebar: {
+                    dashboard: 'Dashboard',
+                    caseFiling: 'Case Filing',
+                    ongoingCases: 'Ongoing Cases',
+                    draftCases: 'Draft Cases',
+                    payments: 'Payments',
+                    settings: 'Settings',
+                    signOut: 'Sign Out'
+                },
+                greeting: 'Good morning John Doe,',
+                download: 'Download',
+                cards: {
+                    filed: 'Filed Cases',
+                    filedCount: '10',
+                    filedAction: 'File your case',
+                    ongoing: 'Ongoing Cases',
+                    ongoingCount: 'Pending 2 | Defendant 3',
+                    ongoingAction: 'View ongoing case overview',
+                    draft: 'Draft Cases',
+                    draftCount: '10',
+                    draftAction: 'View draft cases',
+                    judiPay: 'Judi Pay',
+                    judiPayAction: 'View transactions and payment history',
+                    judiPayDesc: 'Check latest audit',
+                    judiPayRecords: 'Judi Pay Records'
+                },
+                timeline: {
+                    title: 'Upcoming Timeline',
+                    table: ['#', 'Name', 'Date', 'Time', 'Court', 'Case Number', 'Progress'],
+                    rows: [
+                        ['01', 'Abdullah Islam', 'Sunday', '9:00 AM', 'Supreme Court', '34343494949', 45],
+                        ['02', 'Sumon Khan', 'Monday', '9:00 AM', 'Supreme Court', '34343494947', 29],
+                        ['03', 'Atithi Chakraborty', 'Sunday', '11:00 AM', 'Supreme Court', '34343494948', 18],
+                        ['04', 'Jahida Chakraborty', 'Monday', '10:00 AM', 'District Court', '2500005555', 25],
+                        ['05', 'Atithi Chakraborty', 'Monday', '11:00 AM', 'District Court', '2500005556', 18],
+                        ['06', 'Zahir Rayhan', 'Monday', '10:00 AM', 'District Court', '2500005557', 25]
+                    ]
+                }
+            }
+        };
+        let currentLang = 'bn';
+
+        // Language dropdown toggle
+        const langSelector = document.getElementById('lang-selector');
+        const langDropdown = document.getElementById('lang-dropdown');
+        langSelector.addEventListener('click', function (e) {
+            e.stopPropagation();
+            langDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', function (e) {
+            if (!langDropdown.contains(e.target) && !langSelector.contains(e.target)) {
+                langDropdown.classList.add('hidden');
+            }
+        });
+        // Language change
+        langDropdown.querySelectorAll('[data-lang]').forEach(item => {
+            item.addEventListener('click', function (e) {
+                const lang = this.getAttribute('data-lang');
+                setLanguage(lang);
+                langDropdown.classList.add('hidden');
+            });
+        });
+        function setLanguage(lang) {
+            currentLang = lang;
+            langData[lang].timeline.table.forEach((txt, i) => ths[i].textContent = txt);
+            const tbody = document.querySelector('.timeline-table tbody');
+            tbody.innerHTML = '';
+            langData[lang].timeline.rows.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach((cell, idx) => {
+                    if (idx < 6) {
+                        const td = document.createElement('td');
+                        td.className = 'py-2';
+                        td.textContent = cell;
+                        tr.appendChild(td);
+                    }
+                });
+                const td = document.createElement('td');
+                td.className = 'py-2';
+                td.innerHTML = `<div class="progress-bar w-24"><div class="progress-bar-fill" style="width: ${row[6]}%"></div></div>`;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+            });
+            renderNotifications();
+        }
+        // Notification dropdown toggle
+        document.getElementById('notification-btn').addEventListener('click', function (e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('notification-dropdown');
+            dropdown.classList.toggle('show');
+            renderNotifications();
+        });
+        // Hide notification dropdown when clicking outside
+        document.addEventListener('click', function (event) {
+            const btn = document.getElementById('notification-btn');
+            const dropdown = document.getElementById('notification-dropdown');
+            if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+        // Render notifications
+        function renderNotifications() {
+            const notifList = document.getElementById('notif-list');
+            notifList.innerHTML = '';
+            langData[currentLang].notifications.forEach(msg => {
+                const li = document.createElement('li');
+                li.className = 'p-4 text-gray-600';
+                li.textContent = msg;
+                notifList.appendChild(li);
+            });
+        }
+        // Initial render
+        setLanguage(currentLang);
+    </script>
+</body>
+
+</html>

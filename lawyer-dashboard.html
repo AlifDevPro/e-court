@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>লয়ার ড্যাশবোর্ড | Lawyer Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .sidebar-link.active {
+      background-color: #059669;
+      color: white;
+    }
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #EF4444;
+      color: white;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    .notification-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: 320px;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 50;
+    }
+    .notification-dropdown.show {
+      display: block;
+    }
+    .progress-bar {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #E5E7EB;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background-color: #3B82F6;
+    }
+    .case-status {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .case-status.active {
+      background-color: #DEF7EC;
+      color: #03543F;
+    }
+    .case-status.pending {
+      background-color: #FEF3C7;
+      color: #92400E;
+    }
+    .case-status.completed {
+      background-color: #E0E7FF;
+      color: #3730A3;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <script>
+    // Role-based rendering
+    const testUsers = {
+      'test@example.com': {
+        password: 'password123',
+        name: 'জন ডো',
+        role: 'user'
+      },
+      'lawyer@example.com': {
+        password: 'lawyer123',
+        name: 'অ্যাডভোকেট রহমান',
+        role: 'lawyer'
+      },
+      'judge@example.com': {
+        password: 'judge123',
+        name: 'বিচারক করিম',
+        role: 'judge'
+      }
+    };
+    
+    const userEmail = localStorage.getItem('userEmail');
+    const user = testUsers[userEmail];
+    if (!user || user.role !== 'lawyer') {
+      window.location.href = 'login.html';
+    }
+  </script>
+  <div class="flex min-h-screen">
+    <!-- Left Column: Project Title + Sidebar -->
+    <div class="flex flex-col w-64 bg-white border-r min-h-screen justify-between">
+      <div>
+        <div class="px-8 pt-8 pb-6">
+          <span class="text-2xl font-bold text-gray-900 tracking-tight">DIU LAW PROJECT</span>
+        </div>
+        <nav class="space-y-2 px-2">
+          <a href="#" class="flex items-center px-4 py-3 rounded-lg bg-green-100 text-green-700 font-semibold">
+            <span class="mr-3"><svg width="22" height="22" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="10" stroke-width="2"/><path d="M7 11l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            ড্যাশবোর্ড
+          </a>
+          <a href="#my-cases" class="flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="22" height="22" fill="none" stroke="currentColor"><rect x="3" y="3" width="16" height="16" rx="2" stroke-width="2"/><path d="M7 7h8M7 11h8M7 15h4" stroke-width="2"/></svg></span>
+            আমার মামলা
+          </a>
+          <a href="#case-requests" class="flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="22" height="22" fill="none" stroke="currentColor"><path d="M5 12l5 5L20 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            মামলার অনুরোধ
+          </a>
+          <a href="#schedule" class="flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="22" height="22" fill="none" stroke="currentColor"><rect x="2" y="5" width="18" height="12" rx="2" stroke-width="2"/><path d="M7 9h8M7 13h6" stroke-width="2"/></svg></span>
+            সময়সূচী
+          </a>
+          <a href="#earnings" class="flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-green-50">
+            <span class="mr-3"><svg width="22" height="22" fill="none" stroke="currentColor"><rect x="2" y="7" width="18" height="12" rx="2" stroke-width="2"/><path d="M16 3v4M8 3v4M2 11h18" stroke-width="2"/></svg></span>
+            আয়
+          </a>
+        </nav>
+      </div>
+      <div class="mb-8 px-2 space-y-2">
+        <a href="#settings" class="flex items-center px-4 py-2 rounded-lg text-gray-500 hover:bg-green-50 text-sm">
+          <span class="mr-3"><svg width="20" height="20" fill="none" stroke="currentColor"><circle cx="10" cy="10" r="3" stroke-width="2"/><path d="M16.5 13a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V19a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09A1.65 1.65 0 0 0 9 3.09V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H19a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" stroke-width="2"/></svg></span>
+          Settings
+        </a>
+        <a href="#" id="logout-btn" class="flex items-center px-4 py-2 rounded-lg text-gray-500 hover:bg-green-50 text-sm">
+          <span class="mr-3"><svg width="20" height="20" fill="none" stroke="currentColor"><path d="M13 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Sign Out
+        </a>
+      </div>
+    </div>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col bg-gray-50">
+      <!-- Header -->
+      <div class="flex justify-end items-center px-12 pt-8 pb-4">
+        <button class="px-5 py-2 bg-white border rounded shadow-sm flex items-center mr-4">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          ডাউনলোড করুন
+        </button>
+        <select class="px-2 py-1 border rounded mr-4">
+          <option>বাংলা</option>
+          <option>English</option>
+        </select>
+        <div class="flex items-center space-x-2">
+          <img src="https://ui-avatars.com/api/?name=অ্যাডভোকেট+রহমান&background=059669&color=fff" class="w-10 h-10 rounded-full" alt="User">
+          <div class="flex flex-col">
+            <span class="font-semibold text-gray-700">অ্যাডভোকেট রহমান</span>
+            <span class="text-xs text-gray-500">Lawyer</span>
+          </div>
+        </div>
+      </div>
+      <!-- Greeting -->
+      <div class="px-12 pb-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">সুপ্রভাত অ্যাডভোকেট রহমান,</h2>
+      </div>
+      <!-- Summary Cards -->
+      <div class="px-12 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="bg-blue-50 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+            <div class="mb-2"><svg width="32" height="32" fill="none" stroke="#3B82F6"><rect x="4" y="4" width="24" height="24" rx="6" stroke-width="2"/></svg></div>
+            <div class="text-2xl font-bold text-gray-800 mb-1">২৫টি</div>
+            <div class="text-gray-600 mb-2">সক্রিয় মামলা</div>
+            <a href="#my-cases" class="text-blue-600 text-sm">মামলাগুলো দেখুন</a>
+          </div>
+          <div class="bg-purple-50 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+            <div class="mb-2"><svg width="32" height="32" fill="none" stroke="#8B5CF6"><rect x="4" y="4" width="24" height="24" rx="6" stroke-width="2"/></svg></div>
+            <div class="text-2xl font-bold text-gray-800 mb-1">৫টি</div>
+            <div class="text-gray-600 mb-2">নতুন অনুরোধ</div>
+            <a href="#case-requests" class="text-blue-600 text-sm">অনুরোধগুলো দেখুন</a>
+          </div>
+          <div class="bg-green-50 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+            <div class="mb-2"><svg width="32" height="32" fill="none" stroke="#34D399"><rect x="4" y="4" width="24" height="24" rx="6" stroke-width="2"/></svg></div>
+            <div class="text-2xl font-bold text-gray-800 mb-1">৳৫০,০০০</div>
+            <div class="text-gray-600 mb-2">এই মাসের আয়</div>
+            <a href="#earnings" class="text-blue-600 text-sm">আয় বিবরণী দেখুন</a>
+          </div>
+          <div class="bg-yellow-50 rounded-2xl p-6 flex flex-col items-start shadow-sm">
+            <div class="mb-2"><svg width="32" height="32" fill="none" stroke="#FBBF24"><rect x="4" y="4" width="24" height="24" rx="6" stroke-width="2"/></svg></div>
+            <div class="text-2xl font-bold text-gray-800 mb-1">৮টি</div>
+            <div class="text-gray-600 mb-2">আজকের শুনানি</div>
+            <a href="#schedule" class="text-blue-600 text-sm">সময়সূচী দেখুন</a>
+          </div>
+        </div>
+      </div>
+      <!-- Active Cases Table -->
+      <div class="px-12 pb-8">
+        <div class="bg-white rounded-2xl p-6 shadow-sm">
+          <div class="mb-4 flex items-center justify-between">
+            <h3 class="text-xl font-bold text-gray-800">সক্রিয় মামলা</h3>
+            <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+              নতুন মামলা যোগ করুন
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="text-gray-500 text-left">
+                  <th class="py-2">#</th>
+                  <th class="py-2">মামলার নাম</th>
+                  <th class="py-2">মক্কেল</th>
+                  <th class="py-2">কোর্ট</th>
+                  <th class="py-2">পরবর্তী তারিখ</th>
+                  <th class="py-2">অবস্থা</th>
+                  <th class="py-2">অগ্রগতি</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="py-2">01</td>
+                  <td class="py-2">বনাম রাষ্ট্র</td>
+                  <td class="py-2">আব্দুল্লাহ ইসলাম</td>
+                  <td class="py-2">সুপ্রীমকোর্ট</td>
+                  <td class="py-2">রবিবার, সকাল ৯ টা</td>
+                  <td class="py-2"><span class="case-status active">সক্রিয়</span></td>
+                  <td class="py-2">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 45%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2">02</td>
+                  <td class="py-2">বনাম কর্পোরেশন</td>
+                  <td class="py-2">মোহাম্মদ আলী</td>
+                  <td class="py-2">জেলা আদালত</td>
+                  <td class="py-2">সোমবার, দুপুর ২ টা</td>
+                  <td class="py-2"><span class="case-status pending">অপেক্ষমান</span></td>
+                  <td class="py-2">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 75%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="py-2">03</td>
+                  <td class="py-2">বনাম ব্যাংক</td>
+                  <td class="py-2">রহিমা বেগম</td>
+                  <td class="py-2">সেশন কোর্ট</td>
+                  <td class="py-2">মঙ্গলবার, বিকাল ৪ টা</td>
+                  <td class="py-2"><span class="case-status completed">সম্পন্ন</span></td>
+                  <td class="py-2">
+                    <div class="progress-bar w-24">
+                      <div class="progress-bar-fill" style="width: 100%"></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('logout-btn').addEventListener('click', function() {
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userRole');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html> 

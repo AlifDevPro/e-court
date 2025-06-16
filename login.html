@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>লগইন | Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .chatbot-minimized { height: 48px !important; }
+    @media (min-width: 769px) {
+      .mobile-menu-button { display: none; }
+      .mobile-menu-items { display: none; }
+    }
+    @media (max-width: 768px) {
+      .desktop-menu { display: none; }
+      .mobile-menu-items {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        padding: 1rem;
+        z-index: 50;
+      }
+      .mobile-menu-items.show {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <nav class="bg-white shadow fixed w-full top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <a href="index.html" class="font-bold text-lg text-green-700 hover:text-green-800" id="logo">ই-ফেমিলি কোর্ট</a>
+        </div>
+        
+        <!-- Desktop Menu -->
+        <div class="desktop-menu flex items-center space-x-4">
+          <a href="index.html" class="text-gray-700 hover:text-green-700" id="case-tracking">কেস ট্র্যাকিং</a>
+          <a href="#" class="text-gray-700 hover:text-green-700" id="new-application">নকল উত্তোলন</a>
+          <a href="judi-pay.html" class="text-gray-700 hover:text-green-700" id="notice">জুডি-পে</a>
+          <a href="signup.html" class="px-3 py-1 bg-white border rounded hover:bg-gray-100" id="login">সাইন ইন / রেজি ইর</a>
+          <select id="lang-switch" class="ml-2 px-2 py-1 border rounded">
+            <option value="bn">বাংলা</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-button text-2xl p-2" id="mobile-menu-toggle">&#9776;</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Items -->
+  <div class="mobile-menu-items" id="mobile-menu">
+    <div class="flex flex-col space-y-4">
+      <a href="index.html" class="text-xl text-gray-700 hover:text-green-700" id="mobile-case-tracking">কেস ট্র্যাকিং</a>
+      <a href="#" class="text-xl text-gray-700 hover:text-green-700" id="mobile-new-application">নকল উত্তোলন</a>
+      <a href="judi-pay.html" class="text-xl text-gray-700 hover:text-green-700" id="mobile-notice">জুডি-পে</a>
+      <a href="signup.html" class="text-xl px-3 py-2 bg-white border rounded hover:bg-gray-100 text-left" id="mobile-login">সাইন ইন / রেজি ইর</a>
+      <select id="mobile-lang-switch" class="text-xl w-full px-2 py-2 border rounded mt-4">
+        <option value="bn">বাংলা</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-4 py-2 sm:py-8 mt-16">
+    <div class="w-full max-w-md mx-auto">
+      <!-- Page Title -->
+      <div class="text-center mb-4 sm:mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800" id="page-title">লগইন</h1>
+        <p class="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base" id="page-subtitle">আপনার অ্যাকাউন্টে লগইন করুন</p>
+      </div>
+
+      <!-- Login Form -->
+      <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+        <form class="space-y-4" id="login-form">
+          <!-- Email Field -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-1" id="email-label">ইমেইল ঠিকানা</label>
+            <input type="email" id="email" name="email" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                   placeholder="আপনার ইমেইল ঠিকানা লিখুন">
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <label for="password" class="block text-sm font-medium text-gray-700 mb-1" id="password-label">পাসওয়ার্ড</label>
+            <input type="password" id="password" name="password" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                   placeholder="আপনার পাসওয়ার্ড লিখুন">
+          </div>
+
+          <!-- Forgot Password Link -->
+          <div class="text-right">
+            <a href="#" class="text-sm text-blue-600 hover:text-blue-800" id="forgot-password">পাসওয়ার্ড ভুলে গেছেন?</a>
+          </div>
+
+          <!-- Face Verification Button -->
+          <div class="flex justify-center">
+            <button type="submit" id="face-verification" 
+                    class="w-full md:w-auto px-8 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
+              <span class="flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span id="face-verification-text">ফেস ভেরিফিকেশন</span>
+              </span>
+            </button>
+          </div>
+
+          <!-- Sign Up Link -->
+          <div class="text-center mt-4">
+            <p class="text-sm text-gray-600" id="no-account">অ্যাকাউন্ট নেই?</p>
+            <a href="signup.html" class="text-sm text-blue-600 hover:text-blue-800 font-medium" id="signup-link">নতুন অ্যাকাউন্ট তৈরি করুন</a>
+          </div>
+
+          <!-- Login Error Message -->
+          <div class="text-center mt-4">
+            <p class="text-sm text-red-600" id="login-error"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Chatbot -->
+  <div id="chatbot" class="fixed bottom-4 right-4 w-80 bg-white shadow-lg rounded-lg flex flex-col transition-all" style="height: 400px;">
+    <div class="flex items-center justify-between bg-gray-200 px-3 py-2 rounded-t-lg">
+      <span id="chatbot-title">চ্যাট বট</span>
+      <button id="chatbot-toggle" class="text-xl font-bold">&#x2922;</button>
+    </div>
+    <div class="flex-1 p-3 overflow-y-auto" id="chatbot-messages">
+      <div class="text-center text-gray-500 mt-8" id="chatbot-welcome">কিভাবে আপনাকে সাহায্য করতে পারি?</div>
+    </div>
+    <form class="flex items-center border-t px-2 py-2" id="chatbot-form">
+      <input type="text" class="flex-1 border rounded px-2 py-1" placeholder="প্রশ্ন করুন" id="chatbot-input">
+      <button type="submit" class="ml-2 text-2xl">&#x27A4;</button>
+    </form>
+  </div>
+
+  <script>
+   
+
+    // Test user credentials
+    const testUsers = {
+      'test@example.com': {
+        password: 'password123',
+        name: 'জন ডো',
+        role: 'user'
+      },
+      'lawyer@example.com': {
+        password: 'lawyer123',
+        name: 'অ্যাডভোকেট রহমান',
+        role: 'lawyer'
+      },
+      'judge@example.com': {
+        password: 'judge123',
+        name: 'বিচারক করিম',
+        role: 'judge'
+      }
+    };
+
+    // Language data
+    const langData = {
+      bn: {
+        logo: 'ই-ফেমিলি কোর্ট',
+        caseTracking: 'কেস ট্র্যাকিং',
+        newApplication: 'নকল উত্তোলন',
+        notice: 'জুডি-পে',
+        login: 'সাইন ইন / রেজি ইর',
+        chatbotTitle: 'চ্যাট বট',
+        chatbotWelcome: 'কিভাবে আপনাকে সাহায্য করতে পারি?',
+        chatbotInput: 'প্রশ্ন করুন',
+        pageTitle: 'লগইন',
+        pageSubtitle: 'আপনার অ্যাকাউন্টে লগইন করুন',
+        emailLabel: 'ইমেইল ঠিকানা',
+        emailPlaceholder: 'আপনার ইমেইল ঠিকানা লিখুন',
+        passwordLabel: 'পাসওয়ার্ড',
+        passwordPlaceholder: 'আপনার পাসওয়ার্ড লিখুন',
+        forgotPassword: 'পাসওয়ার্ড ভুলে গেছেন?',
+        faceVerificationText: 'ফেস ভেরিফিকেশন',
+        noAccount: 'অ্যাকাউন্ট নেই?',
+        signupLink: 'নতুন অ্যাকাউন্ট তৈরি করুন',
+        loginError: 'ইমেইল বা পাসওয়ার্ড ভুল হয়েছে',
+        loginSuccess: 'সফলভাবে লগইন হয়েছে',
+        userRole: {
+          lawyer: 'আইনজীবী',
+          judge: 'বিচারক'
+        }
+      },
+      en: {
+        logo: 'E-Family Court',
+        caseTracking: 'Case Tracking',
+        newApplication: 'Certified Copy',
+        notice: 'Judi-Pay',
+        login: 'Sign In / Register',
+        chatbotTitle: 'Chatbot',
+        chatbotWelcome: 'How can I assist you?',
+        chatbotInput: 'Ask a question',
+        pageTitle: 'Login',
+        pageSubtitle: 'Sign in to your account',
+        emailLabel: 'Email Address',
+        emailPlaceholder: 'Enter your email address',
+        passwordLabel: 'Password',
+        passwordPlaceholder: 'Enter your password',
+        forgotPassword: 'Forgot Password?',
+        faceVerificationText: 'Face Verification',
+        noAccount: 'Don\'t have an account?',
+        signupLink: 'Create new account',
+        loginError: 'Invalid email or password',
+        loginSuccess: 'Successfully logged in',
+        userRole: {
+          lawyer: 'Lawyer',
+          judge: 'Judge'
+        }
+      }
+    };
+
+    // Language switcher
+    const langSwitch = document.getElementById('lang-switch');
+    const mobileLangSwitch = document.getElementById('mobile-lang-switch');
+    const updateLanguage = (lang) => {
+      document.getElementById('logo').textContent = langData[lang].logo;
+      document.getElementById('case-tracking').textContent = langData[lang].caseTracking;
+      document.getElementById('new-application').textContent = langData[lang].newApplication;
+      document.getElementById('notice').textContent = langData[lang].notice;
+      document.getElementById('login').textContent = langData[lang].login;
+      document.getElementById('mobile-case-tracking').textContent = langData[lang].caseTracking;
+      document.getElementById('mobile-new-application').textContent = langData[lang].newApplication;
+      document.getElementById('mobile-notice').textContent = langData[lang].notice;
+      document.getElementById('mobile-login').textContent = langData[lang].login;
+      document.getElementById('chatbot-title').textContent = langData[lang].chatbotTitle;
+      document.getElementById('chatbot-welcome').textContent = langData[lang].chatbotWelcome;
+      document.getElementById('chatbot-input').placeholder = langData[lang].chatbotInput;
+      document.getElementById('page-title').textContent = langData[lang].pageTitle;
+      document.getElementById('page-subtitle').textContent = langData[lang].pageSubtitle;
+      document.getElementById('email-label').textContent = langData[lang].emailLabel;
+      document.getElementById('email').placeholder = langData[lang].emailPlaceholder;
+      document.getElementById('password-label').textContent = langData[lang].passwordLabel;
+      document.getElementById('password').placeholder = langData[lang].passwordPlaceholder;
+      document.getElementById('forgot-password').textContent = langData[lang].forgotPassword;
+      document.getElementById('face-verification-text').textContent = langData[lang].faceVerificationText;
+      document.getElementById('no-account').textContent = langData[lang].noAccount;
+      document.getElementById('signup-link').textContent = langData[lang].signupLink;
+      document.getElementById('login-error').textContent = langData[lang].loginError;
+      document.documentElement.lang = lang;
+    };
+    langSwitch.addEventListener('change', (e) => updateLanguage(e.target.value));
+    mobileLangSwitch.addEventListener('change', (e) => updateLanguage(e.target.value));
+
+    // Mobile menu toggle with animation
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+      mobileMenuToggle.innerHTML = mobileMenu.classList.contains('show') ? '✕' : '☰';
+    });
+
+    // Chatbot minimize/maximize
+    const chatbot = document.getElementById('chatbot');
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    let minimized = false;
+    chatbotToggle.addEventListener('click', () => {
+      minimized = !minimized;
+      if (minimized) {
+        chatbot.classList.add('chatbot-minimized');
+        chatbot.style.height = '48px';
+      } else {
+        chatbot.classList.remove('chatbot-minimized');
+        chatbot.style.height = '400px';
+      }
+    });
+
+    // Login form submission
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      // Validate form fields
+      if (!email || !password) {
+        loginError.textContent = langData[langSwitch.value].loginError;
+        loginError.classList.remove('text-green-600');
+        loginError.classList.add('text-red-600');
+        return;
+      }
+      
+      console.log('Login attempt:', { email, password }); // Debug log
+      
+      // Check credentials
+      const user = testUsers[email];
+      console.log('Found user:', user); // Debug log
+      
+      if (user && user.password === password) {
+        // Clear any existing data first
+        localStorage.clear();
+        
+        // Store login state
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userRole', user.role);
+        
+        console.log('Stored user data:', { // Debug log
+          isLoggedIn: localStorage.getItem('isLoggedIn'),
+          userEmail: localStorage.getItem('userEmail'),
+          userName: localStorage.getItem('userName'),
+          userRole: localStorage.getItem('userRole')
+        });
+        
+        // Show success message
+        loginError.textContent = langData[langSwitch.value].loginSuccess;
+        loginError.classList.remove('text-red-600');
+        loginError.classList.add('text-green-600');
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      } else {
+        // Show error message
+        loginError.textContent = langData[langSwitch.value].loginError;
+        loginError.classList.remove('text-green-600');
+        loginError.classList.add('text-red-600');
+      }
+    });
+
+    // Face verification button
+    const faceVerificationBtn = document.getElementById('face-verification');
+    faceVerificationBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Validate form fields
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      if (!email || !password) {
+        loginError.textContent = langData[langSwitch.value].loginError;
+        loginError.classList.remove('text-green-600');
+        loginError.classList.add('text-red-600');
+        return;
+      }
+      
+      // Clear any existing data first
+      localStorage.clear();
+      
+      // Check credentials
+      const user = testUsers[email];
+      if (user && user.password === password) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userRole', user.role);
+        
+        // Show success message
+        loginError.textContent = langData[langSwitch.value].loginSuccess;
+        loginError.classList.remove('text-red-600');
+        loginError.classList.add('text-green-600');
+        
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+          if(localStorage.getItem('userRole') === 'lawyer'){
+          window.location.href = 'lawyer-dashboard.html';
+        }else{
+          window.location.href = '/user/dashboard.html';
+        }
+        }, 1000);
+      } else {
+        // Show error message
+        loginError.textContent = langData[langSwitch.value].loginError;
+        loginError.classList.remove('text-green-600');
+        loginError.classList.add('text-red-600');
+      }
+    });
+
+    // Check if user is already logged in
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('isLoggedIn') === 'true') {
+        if(localStorage.getItem('userRole') === 'lawyer'){
+          window.location.href = 'lawyer-dashboard.html';
+        }else{
+          window.location.href = '/user/dashboard.html';
+        }
+      }
+    });
+  </script>
+</body>
+</html> 
